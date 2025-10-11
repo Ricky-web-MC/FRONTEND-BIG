@@ -3,6 +3,7 @@ const introSection = document.getElementById("intro-section");
 const introPic = document.getElementById("introPic");
 const introName = document.getElementById("introName");
 const introSubmit = document.getElementById("introSubmit");
+const introCancel = document.getElementById("introCancel");
 
 const container = document.querySelector(".container");
 const profilePic = document.getElementById("profilePic");
@@ -19,7 +20,10 @@ const singleBtn = document.getElementById("singleBtn");
 const multiBtn = document.getElementById("multiBtn");
 const playerSelect = document.getElementById("player-select");
 const confirmPlayerBtn = document.getElementById("confirmPlayerBtn");
+const cancelPLayerBtn = document.getElementById("cancelPLayerBtn")
 const playerCount = document.getElementById("playerCount");
+const clickSound = document.getElementById("clickSound")
+
 
 // ==================== LOAD PROFIL ====================
 window.addEventListener("load", () => {
@@ -27,7 +31,14 @@ window.addEventListener("load", () => {
   const savedImage = localStorage.getItem("profileImage");
   if (savedImage) profilePic.src = savedImage;
   if (savedName) usernameDisplay.textContent = savedName;
+
+  if (savedName) {
+    introSection.style.display = "none";
+    container.style.display = "block";
+  }
 });
+
+
 
 // ==================== INTRO SUBMIT ====================
 introSubmit.addEventListener("click", () => {
@@ -65,6 +76,20 @@ function hideIntro() {
   }, 500);
 }
 
+
+
+// ==================== INTRO CANCEL ====================
+introCancel.addEventListener("click", () => {
+  introSection.classList.add("fade-out");
+  setTimeout(() => {
+    introSection.style.display = "none";
+    container.style.display = "block";
+    container.classList.remove("fade-out");
+  }, 500);
+});
+
+
+
 // ==================== EDIT PROFILE ====================
 editProfileBtn.addEventListener("click", () => {
   container.classList.add("fade-out");
@@ -73,6 +98,8 @@ editProfileBtn.addEventListener("click", () => {
     introSection.style.display = "flex";
     introSection.classList.remove("fade-out");
     introSection.classList.add("active");
+
+
 
     // preload data lama biar bisa disunting
     const savedName = localStorage.getItem("username");
@@ -85,6 +112,8 @@ editProfileBtn.addEventListener("click", () => {
     }
   }, 500);
 });
+
+
 
 // ==================== UPLOAD FOTO ====================
 profilePic.addEventListener("click", () => uploadPic.click());
@@ -145,6 +174,7 @@ multiBtn.addEventListener("click", () => {
   playerSelect.classList.remove("hidden");
 });
 
+
 // ==================== KONFIRMASI PLAYER ====================
 confirmPlayerBtn.addEventListener("click", () => {
   if (!selectedMode) {
@@ -153,5 +183,53 @@ confirmPlayerBtn.addEventListener("click", () => {
   }
   localStorage.setItem("mode", selectedMode);
   localStorage.setItem("playerCount", playerCount.value);
-  window.location.href = "lobby.html";
+
+  document.body.classList.add("page-fade-out");
+
+  setTimeout(() => {
+    window.location.href = "lobby.html";
+  }, 600);
 });
+
+// ==================== CANCEL PLAYER ====================
+cancelPLayerBtn.addEventListener("click", () => {
+  playerSelect.classList.add("fade-out");
+  setTimeout(() => {
+    playerSelect.classList.add("hidden");
+    modeSelect.classList.add("hidden");
+
+    playerSelect.classList.remove("fade-out");
+    modeSelect.classList.remove("fade-in");
+    modeSelect.classList.remove("fade-out");
+
+    container.style.display = "block";
+    container.classList.remove("fade-out");
+    container.classList.add("fade-in");
+
+    const modeButton = document.querySelectorAll(".mode-buttons button");
+    modeButton.forEach(btn => btn.classList.remove("active-mode"));
+
+    selectedMode = null;
+    localStorage.removeItem("mode");
+  }, 500);
+});
+
+// const sounds = {
+//   start: new Audio("../public/sound/button.mp3"),
+// }
+
+// function playSound(type = "generic") {
+//   const audio = sounds[type] || sounds.generic;
+//   audio.currentTime = 0;
+//   audio.play().catch(err => console.warn("gagal play:", err));
+// }
+
+// window.addEventListener("click", function unlockAudio() {
+//     Object.values(sounds).forEach(a => {
+//       a.play().then(() => {
+//         a.pause();
+//         a.currentTime = 0;
+//       });
+//     });
+//     window.removeEventListener("click", unlockAudio);
+// });

@@ -1,91 +1,118 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #222;
-  color: white;
-  text-align: center;
   margin: 0;
   padding: 0;
-}
-
-#game-container {
-  width: 600px;
-  margin: 30px auto;
-  background: #333;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.hidden {
-  display: none;
-}
-
-#chat-box {
-  height: 200px;
-  overflow-y: auto;
-  background: #111;
-  margin: 10px 0;
-  padding: 10px;
-  text-align: left;
-}
-
-#chat-input {
-  width: 70%;
-  padding: 5px;
-}
-
-button {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background: #555;
-  color: white;
-}
-
-button:hover {
-  background: #777;
-}
-
-/* === Loader Screen === */
-#loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000; /* layar hitam */
+  font-family: "Poppins", sans-serif;
+  background: black;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  transition: opacity 1s ease, visibility 1s ease;
 }
 
-#loader.hidden {
-  opacity: 0;
-  visibility: hidden;
+.bgVideo {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(60%) saturate(120%);
+  z-index: -1;
 }
 
-/* Spinner bulat */
-.spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid #00c8ff;
+.lobby-container {
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 20px;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 0 20px cyan;
+}
+
+.lobby-title {
+  font-family: "Creepster", cursive;
+  font-size: 60px;
+  color: red;
+  margin-bottom: 20px;
+}
+
+.player-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.lobby-pp {
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 10px;
+  border: 3px solid cyan;
+  object-fit: cover;
+  box-shadow: 0 0 15px cyan;
 }
 
-@keyframes spin {
-  0% {transform: rotate(0deg);}
-  100% {transform: rotate(360deg);}
+.lobby-username {
+  color: yellow;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 8px 0;
+  text-shadow: 0 0 8px cyan;
 }
 
-#loader p {
-  color: #00c8ff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.1em;
-  letter-spacing: 1px;
+.lobby-mode,
+.lobby-count {
+  color: cyan;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.player-list {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.player-card {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid cyan;
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  width: 100px;
+  transition: transform 0.2s;
+}
+.player-card:hover {
+  transform: scale(1.1);
+}
+
+.lobby-buttons {
+  margin-top: 25px;
+}
+
+.back-btn,
+.start-btn {
+  background: linear-gradient(135deg, cyan, white);
+  border: none;
+  border-radius: 25px;
+  padding: 10px 30px;
+  margin: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.back-btn:hover,
+.start-btn:hover {
+  transform: scale(1.1);
+}
+
+.fade-in {
+  animation: fadeIn 0.7s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }

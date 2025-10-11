@@ -1,3 +1,6 @@
+/* =========================================
+   BASE SETUP
+   ========================================= */
 body {
   margin: 0;
   padding: 0;
@@ -10,6 +13,9 @@ body {
   overflow: hidden;
 }
 
+/* =========================================
+   BACKGROUND VIDEO
+   ========================================= */
 .bgVideo {
   position: fixed;
   top: 0;
@@ -21,6 +27,9 @@ body {
   filter: brightness(60%) saturate(120%);
 }
 
+/* =========================================
+   CONTAINER & TITLE
+   ========================================= */
 .container {
   text-align: center;
   color: white;
@@ -36,6 +45,9 @@ body {
   margin-bottom: 25px;
 }
 
+/* =========================================
+   PROFILE SECTION
+   ========================================= */
 .profile-container {
   display: flex;
   justify-content: center;
@@ -58,6 +70,9 @@ body {
   box-shadow: 0 0 25px white;
 }
 
+/* =========================================
+   USERNAME INPUT FIELD
+   ========================================= */
 input {
   padding: 10px 15px;
   border-radius: 20px;
@@ -78,11 +93,14 @@ input::placeholder {
   color: darkgrey;
 }
 
-input:focus{
+input:focus {
   background: rgba(0, 225, 225, 0.2);
   box-shadow: 0 0 15px cyan;
 }
 
+/* =========================================
+   MODE SELECTION & DROPDOWN
+   ========================================= */
 .mode-container {
   margin-bottom: 20px;
 }
@@ -105,6 +123,9 @@ select {
   outline: none;
 }
 
+/* =========================================
+   SOUND BUTTON
+   ========================================= */
 .sound-btn {
   background: transparent;
   border: none;
@@ -114,6 +135,9 @@ select {
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
+/* =========================================
+   MAIN BUTTON (MULAI)
+   ========================================= */
 .start-btn {
   background: linear-gradient(135deg, cyan, white);
   border: none;
@@ -123,19 +147,17 @@ select {
   font-weight: bold;
   color: black;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .start-btn:hover {
   transform: scale(1.1);
+  box-shadow: 0 0 20px cyan; /* efek glow tambahan */
 }
 
-
-
-
-
-
-
+/* =========================================
+   FADE IN / FADE OUT ANIMATION
+   ========================================= */
 .fade-section {
   opacity: 0;
   transition: opacity 1s ease;
@@ -146,38 +168,6 @@ select {
   opacity: 1;
   pointer-events: all;
 }
-
-#intro-section {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  z-index: 99;
-}
-
-.intro-content input, 
-.intro-content button {
-  margin: 10px;
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  text-align: center;
-}
-
-.intro-content button {
-  background: cyan;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-
-
 
 .hidden {
   display: none;
@@ -202,7 +192,67 @@ select {
   to { opacity: 0; transform: scale(0.9); }
 }
 
-/* Pusatkan menu pilihan mode */
+.page-fade-out {
+  animation: pageFadeOut 0.6s ease forwards;
+}
+
+@keyframes pageFadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.97); }
+}
+
+/* =========================================
+   INTRO POPUP (EDIT PROFILE SECTION)
+   ========================================= */
+#intro-section {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  z-index: 99;
+}
+
+/* Tombol submit di popup */
+.introSubmit {
+  background: transparent;
+  color: white;
+  border: 2px solid cyan;
+  border-radius: 8px;
+  margin-top: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.introSubmit:hover {
+  background: green;
+  color: cyan;
+  box-shadow: 0 0 15px lime;
+}
+
+/* Tombol cancel di popup */
+.introCancel {
+  background: transparent;
+  color: white;
+  border: 2px solid cyan;
+  border-radius: 8px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.introCancel:hover {
+  background: red;
+  color: cyan;
+  box-shadow: 0 0 15px red;
+}
+
+/* =========================================
+   MODE SELECTION PANEL
+   ========================================= */
 #mode-select {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -214,8 +264,9 @@ select {
   color: white;
 }
 
+/* Tombol mode & tombol konfirmasi */
 .mode-buttons button,
-#confirmPlayerBtn {
+.tombolKonfirm {
   background: linear-gradient(135deg, cyan, white);
   border: none;
   border-radius: 20px;
@@ -223,26 +274,30 @@ select {
   margin: 8px;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .mode-buttons button:hover,
-#confirmPlayerBtn:hover {
+.tombolKonfirm:hover {
   transform: scale(1.1);
+  box-shadow: 0 0 15px cyan; /* efek glow lembut */
 }
 
+/* Mode yang sedang aktif */
 .active-mode {
   background: linear-gradient(135deg, #00eaff, #0077ff);
   box-shadow: 0 0 15px #00ffff, 0 0 30px #0077ff inset;
   color: white;
-  transition: scale(1.1);
   transition: all 0.2s ease;
 }
 
-
+/* =========================================
+   USERNAME DISPLAY & EDIT BUTTON
+   ========================================= */
 .username-display {
-  color: yellow;
+  color: white;
   font-size: 18px;
+  border-radius: 20px;
   font-weight: 600;
   margin: 10px 0;
   text-shadow: 0 0 8px cyan;
@@ -263,4 +318,5 @@ select {
   background: cyan;
   color: black;
   transform: scale(1.1);
+  box-shadow: 0 0 15px cyan;
 }

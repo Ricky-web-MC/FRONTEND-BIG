@@ -1,50 +1,107 @@
-const lobby = document.getElementById("lobby");
-const roleScreen = document.getElementById("role-screen");
-const gameScreen = document.getElementById("game-screen");
+const lobbyProfilePic = document.getElementById("lobbyProfilePic");
+const lobbyUsername = document.getElementById("lobbyUsername");
+const lobbyMode = document.getElementById("lobbyMode");
+const lobbyCount = document.getElementById("lobbyCount");
+const playerList = document.getElementById("playerList");
+const backBtn = document.getElementById("backBtn");
+const startGameBtn = document.getElementById("startGameBtn");
+const clickSound = document.getElementById("clickSound");
 
-const startBtn = document.getElementById("start-btn");
-const readyBtn = document.getElementById("ready-btn");
-const roleText = document.getElementById("role-text");
+// Ambil data dari localStorage
+const username = localStorage.getItem("username") || "Guest";
+const profileImage = localStorage.getItem("profileImage") || "../public/img/profile.jpg";
+const mode = localStorage.getItem("mode");
+const playerCount = parseInt(localStorage.getItem("playerCount")) || 5;
 
-const chatBox = document.getElementById("chat-box");
-const chatInput = document.getElementById("chat-input");
-const sendBtn = document.getElementById("send-btn");
+// Update tampilan
+lobbyProfilePic.src = profileImage;
+lobbyUsername.textContent = username;
+lobbyMode.textContent = `Mode: ${mode === "single" ? "Single Player" : "Multiplayer"}`;
+lobbyCount.textContent = `Jumlah Pemain: ${playerCount}`;
 
-// Simulasi daftar pemain
-let players = ["Kamu", "Player2", "Player3"];
+// Sound click
+function playClick() {
+  clickSound.currentTime = 0;
+  clickSound.play();
+}
 
-// Tampilkan daftar pemain di lobby
-const playerList = document.getElementById("player-list");
-players.forEach(p => {
-  let li = document.createElement("li");
-  li.textContent = p;
-  playerList.appendChild(li);
-});
+// Generate list pemain (dummy dulu)
+function generatePlayers(count) {
+  playerList.innerHTML = "";
 
-// Klik mulai game → tampilkan role
-startBtn.addEventListener("click", () => {
-  lobby.classList.add("hidden");
-  roleScreen.classList.remove("hidden");
+  const roles = assignRoles(count);
 
-  // Role random sementara
-  const roles = ["Mafia", "Polisi", "Dokter", "Warga"];
-  const randomRole = roles[Math.floor(Math.random() * roles.length)];
-  roleText.textContent = `Kamu adalah ${randomRole}`;
-});
-
-// Klik siap → masuk ke game screen
-readyBtn.addEventListener("click", () => {
-  roleScreen.classList.add("hidden");
-  gameScreen.classList.remove("hidden");
-});
-
-// Chat dummy (belum konek backend)
-sendBtn.addEventListener("click", () => {
-  const msg = chatInput.value.trim();
-  if (msg) {
-    let p = document.createElement("p");
-    p.textContent = "Kamu: " + msg;
-    chatBox.appendChild(p);
-    chatInput.value = "";
+  for (let i = 1; i <= count; i++) {
+    const div = document.createElement("div");
+    div.classList.add("player-card");
+    div.innerHTML = `<strong>Player ${i}</strong><br><span class="role hidden">${roles[i - 1]}</span>`;
+    playerList.appendChild(div);
   }
+
+  localStorage.setItem("assignedRoles", JSON.stringify(roles));
+}
+generatePlayers(playerCount);
+
+
+// Pembagian role otomatis
+function assignRoles(count) {
+  const roles = [];
+
+  if (count === 5) {
+    roles.push("Mafia");
+    for (let i = 0; i < 4; i++) roles.push("Warga");
+  } else if (count === 8) {
+    roles.push("Mafia", "Mafia");
+    while (roles.length < 8) roles.push("Warga");
+  } else if (count === 12) {
+    roles.push("Mafia", "Mafia", "Mafia", "Dokter", "Dokter");
+    while (roles.length < 12) roles.push("Warga");
+  } else if (count === 15) {
+    roles.push("Mafia", "Mafia", "Mafia", "Detektif", "Detektif", "Dokter", "Dokter");
+    while (roles.length < 15) roles.push("Warga");
+  } else if (count === 18) {
+    roles.push(
+      "Mafia", "Mafia", "Mafia",
+      "Detektif", "Detektif",
+      "Dokter", "Dokter",
+      "Couple", "Couple"
+    );
+    while (roles.length < 18) roles.push("Warga");
+  } else if (count === 20) {
+    roles.push(
+      "Mafia", "Mafia", "Mafia",
+      "Detektif", "Detektif",
+      "Dokter", "Dokter",
+      "Couple", "Couple",
+      "Spy", "Spy",
+      "Arsonist"
+    );
+    while (roles.length < 20) roles.push("Warga");
+  }
+
+  // Acak role agar random tiap main
+  return roles.sort(() => Math.random() - 0.5);
+}
+
+// Tombol kembali (hanya single mode)
+if (mode === "single") {
+  backBtn.addEventListener("click", () => {
+    playClick();
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 500);
+  });
+} else {
+  backBtn.style.display = "none";
+}
+
+// Tombol mulai game
+startGameBtn.addEventListener("click", () => {
+  playClick();
+  startGameBtn.textContent = "Loading...";
+  startGameBtn.disabled = true;
+  setTimeout(() => {
+    window.location.href = "Sgame.html";
+  }, 800);
 });

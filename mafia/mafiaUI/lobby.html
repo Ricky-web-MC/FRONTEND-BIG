@@ -1,51 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Mafia Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAFIA - Lobby</title>
   <link rel="stylesheet" href="../mafiaDecorate/lobby.css">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 </head>
 <body>
+  <video autoplay muted loop class="bgVideo">
+    <source src="../public/video/lobby.mp4" type="video/mp4">
+  </video>
 
-  <div id="loader">
-    <div class="spinner"></div>
-    <p>Loading room...</p>
-  </div>
+  <div class="lobby-container fade-in">
+    <h1 class="lobby-title">LOBBY</h1>
 
-  <div id="game-container">
-    <h1>Mafia Game 🎭</h1>
-
-    <!-- Lobby -->
-    <div id="lobby">
-      <h2>Lobby</h2>
-      <p>Menunggu pemain lain bergabung...</p>
-      <ul id="player-list"></ul>
-      <button id="start-btn">Mulai Game</button>
+    <div class="player-info">
+      <img id="lobbyProfilePic" class="lobby-pp" src="../public/img/profile.jpg" alt="pp">
+      <p id="lobbyUsername" class="lobby-username">Guest</p>
+      <p id="lobbyMode" class="lobby-mode">Mode: ???</p>
+      <p id="lobbyCount" class="lobby-count">Jumlah Pemain: ???</p>
     </div>
 
-    <!-- Role Info -->
-    <div id="role-screen" class="hidden">
-      <h2>Peran Kamu</h2>
-      <p id="role-text"></p>
-      <button id="ready-btn">OK</button>
-    </div>
+    <div id="playerList" class="player-list"></div>
 
-    <!-- Game Play -->
-    <div id="game-screen" class="hidden">
-      <h2>Diskusi</h2>
-      <div id="chat-box"></div>
-      <input type="text" id="chat-input" placeholder="Ketik pesan...">
-      <button id="send-btn">Kirim</button>
+    <div class="lobby-buttons">
+      <button id="backBtn" class="back-btn">Kembali</button>
+      <button id="startGameBtn" class="start-btn">Mulai Game</button>
     </div>
   </div>
-  <script>
-    window.addEventListener("load", () => {
-      const loader = document.getElementById("loader");
-      setTimeout(() => {
-        loader.classList.add("hidden");
-      }, 2000);
-    });
-  </script>
+
+  <audio id="clickSound">
+    <source src="../public/sound/button-305770.mp3" type="audio/mpeg">
+  </audio>
+
   <script src="../mafiaInteract/lobby.js"></script>
 </body>
 </html>
