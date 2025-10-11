@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mafia Game</title>
+  <link rel="stylesheet" href="../mafiaDecorate/lobby.css">
+</head>
+<body>
+
+  <div id="loader">
+    <div class="spinner"></div>
+    <p>Loading room...</p>
+  </div>
+
+  <div id="game-container">
+    <h1>Mafia Game 🎭</h1>
+
+    <!-- Lobby -->
+    <div id="lobby">
+      <h2>Lobby</h2>
+      <p>Menunggu pemain lain bergabung...</p>
+      <ul id="player-list"></ul>
+      <button id="start-btn">Mulai Game</button>
+    </div>
+
+    <!-- Role Info -->
+    <div id="role-screen" class="hidden">
+      <h2>Peran Kamu</h2>
+      <p id="role-text"></p>
+      <button id="ready-btn">OK</button>
+    </div>
+
+    <!-- Game Play -->
+    <div id="game-screen" class="hidden">
+      <h2>Diskusi</h2>
+      <div id="chat-box"></div>
+      <input type="text" id="chat-input" placeholder="Ketik pesan...">
+      <button id="send-btn">Kirim</button>
+    </div>
+  </div>
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      setTimeout(() => {
+        loader.classList.add("hidden");
+      }, 2000);
+    });
+  </script>
+  <script src="../mafiaInteract/lobby.js"></script>
+</body>
+</html>

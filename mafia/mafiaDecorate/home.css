@@ -1,0 +1,266 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(60%) saturate(120%);
+}
+
+.container {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.title {
+  font-family: "Creepster", cursive;
+  font-size: 70px;
+  color: red;
+  margin-bottom: 25px;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid cyan;
+  object-fit: cover;
+  box-shadow: 0 0 15px cyan;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.profile-pic:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px white;
+}
+
+input {
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  width: 80%;
+  max-width: 250px;
+  margin-bottom: 20px;
+  text-align: center;
+  background: rgba(225, 225, 225, 0.1);
+  color: yellow;
+  font-weight: 500;
+  box-shadow: 0 0 10px rgba(0, 225, 225, 0.3);
+  transition: 0.3s ease;
+}
+
+input::placeholder {
+  color: darkgrey;
+}
+
+input:focus{
+  background: rgba(0, 225, 225, 0.2);
+  box-shadow: 0 0 15px cyan;
+}
+
+.mode-container {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  color: cyan;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+select {
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 2px solid cyan;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-weight: bold;
+  margin-bottom: 10px;
+  outline: none;
+}
+
+.sound-btn {
+  background: transparent;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  margin: 10px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.start-btn {
+  background: linear-gradient(135deg, cyan, white);
+  border: none;
+  border-radius: 25px;
+  padding: 10px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.start-btn:hover {
+  transform: scale(1.1);
+}
+
+
+
+
+
+
+
+.fade-section {
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+
+.fade-section.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#intro-section {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  z-index: 99;
+}
+
+.intro-content input, 
+.intro-content button {
+  margin: 10px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.intro-content button {
+  background: cyan;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+
+
+.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.fade-in {
+  animation: fadeIn 0.7s ease forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.9); }
+}
+
+/* Pusatkan menu pilihan mode */
+#mode-select {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 20px 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px cyan;
+  color: white;
+}
+
+.mode-buttons button,
+#confirmPlayerBtn {
+  background: linear-gradient(135deg, cyan, white);
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  margin: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.mode-buttons button:hover,
+#confirmPlayerBtn:hover {
+  transform: scale(1.1);
+}
+
+.active-mode {
+  background: linear-gradient(135deg, #00eaff, #0077ff);
+  box-shadow: 0 0 15px #00ffff, 0 0 30px #0077ff inset;
+  color: white;
+  transition: scale(1.1);
+  transition: all 0.2s ease;
+}
+
+
+.username-display {
+  color: yellow;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 10px 0;
+  text-shadow: 0 0 8px cyan;
+}
+
+.edit-btn {
+  background: rgba(0, 255, 255, 0.2);
+  border: 2px solid cyan;
+  border-radius: 20px;
+  padding: 6px 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edit-btn:hover {
+  background: cyan;
+  color: black;
+  transform: scale(1.1);
+}

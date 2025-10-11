@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAFIA - Home</title>
+  <link rel="stylesheet" href="../mafiaDecorate/home.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+</head>
+<body>
+  <video autoplay muted loop class="bgVideo">
+    <source src="/frontend/mafia/public/video/fantasyc.mp4" type="video/mp4" />
+  </video>
+
+  <div id="intro-section" class="fade-section active">
+    <div class="intro-content">
+      <h2>Masukkan Profil Kamu</h2>
+      <label for="introPic" class="intro-label">Upload PP:</label>
+      <input type="file" id="introPic" accept="image/*">
+      <input type="text" id="introName" placeholder="Masukkan Username">
+      <button id="introSubmit">Lanjut</button>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <h1 class="title">MAFIA</h1>
+
+    <div id="profile-container">
+        <img id="profilePic" src="img/profile.jpg" alt="unggah foto" class="profile-pic"/>
+        <input type="file" name="" id="uploadPic" accept="image/*" hidden>
+      </div>
+      
+      <p id="usernameDisplay" class="username-display">Guest</p>
+      <button id="editProfileBtn" class="edit-btn">Edit Profile</button>
+
+      <p>play <button id="soundBtn" class="sound-btn">▶</button> music</p>
+      <button id="startBtn" class="start-btn">Mulai</button>
+
+      
+      <audio id="bgMusic" loop>
+        <source src="/frontend/mafia/public/sound/fantasyFX1.mp3" type="audio/mpeg" />
+      </audio>
+    </div>
+  </div>
+  
+  <!-- Tambahkan di bawah tombol Mulai -->
+<div id="mode-select" class="hidden fade-in">
+<h2>Pilih Mode</h2>
+<div class="mode-buttons">
+<button id="singleBtn">Singleplayer</button>
+<button id="multiBtn">Multiplayer</button>
+</div>
+
+<div id="player-select" class="hidden">
+<label for="playerCount">Jumlah Pemain:</label>
+<select id="playerCount">
+ <option value="5">5 Pemain</option>
+ <option value="6">6 Pemain</option>
+ <option value="7">7 Pemain</option>
+ <option value="8">8 Pemain</option>
+ <option value="9">9 Pemain</option>
+ <option value="10">10 Pemain</option>
+ <option value="11">11 Pemain</option>
+ <option value="12">12 Pemain</option>
+ <option value="13">13 Pemain</option>
+ <option value="14">14 Pemain</option>
+ <option value="15">15 Pemain</option>
+ <option value="16">16 Pemain</option>
+ <option value="17">17 Pemain</option>
+ <option value="18">18 Pemain</option>
+ <option value="19">19 Pemain</option>
+ <option value="20">20 Pemain</option>
+</select>
+<button id="confirmPlayerBtn">Lanjut</button>
+</div>
+</div>
+
+  <script src="../mafiaInteract/home.js"></script>
+</body>
+</html>
