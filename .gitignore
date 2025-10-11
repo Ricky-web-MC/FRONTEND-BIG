@@ -1,0 +1,25 @@
+# OS / system files
+.DS_Store
+Thumbs.db
+
+# Node / build tools
+node_modules/
+dist/
+build/
+
+# Env / secret config
+.env
+*.env
+
+# IDE / editor settings
+.Vscode/
+.idea
+*.log
+
+# Backup / temp files
+*.tmp
+*.bak
+*.swp
+
+# Git stuff
+.gitmodules
