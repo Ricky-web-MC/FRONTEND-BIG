@@ -1,107 +1,129 @@
-const lobbyProfilePic = document.getElementById("lobbyProfilePic");
-const lobbyUsername = document.getElementById("lobbyUsername");
-const lobbyMode = document.getElementById("lobbyMode");
-const lobbyCount = document.getElementById("lobbyCount");
-const playerList = document.getElementById("playerList");
-const backBtn = document.getElementById("backBtn");
-const startGameBtn = document.getElementById("startGameBtn");
-const clickSound = document.getElementById("clickSound");
+const SOCKET_URL = "https://backend-production-09796.up.railway.app";
+const socket = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
 
-// Ambil data dari localStorage
-const username = localStorage.getItem("username") || "Guest";
-const profileImage = localStorage.getItem("profileImage") || "../public/img/profile.jpg";
-const mode = localStorage.getItem("mode");
-const playerCount = parseInt(localStorage.getItem("playerCount")) || 5;
+const myNameEl = document.getElementById('myName');
+const myPP = document.getElementById('myPP');
+const roomIdEl = document.getElementById('roomId');
+const playersCountEl = document.getElementById('playersCount');
+const playersMaxEl = document.getElementById('playersMax');
+const playersList = document.getElementById('playersList');
+const chatLog = document.getElementById('chatLog');
+const chatInput = document.getElementById('chatInput');
+const btnSend = document.getElementById('btnSend');
+const btnBackHome = document.getElementById('btnBackHome');
+const btnViewPlayers = document.getElementById('btnViewPlayers');
+const btnReady = document.getElementById('btnReady');
+const clickSound = document.getElementById('clickSound');
+const countOverlay = document.getElementById('countOverlay');
+const countNum = document.getElementById('countNum');
 
-// Update tampilan
-lobbyProfilePic.src = profileImage;
-lobbyUsername.textContent = username;
-lobbyMode.textContent = `Mode: ${mode === "single" ? "Single Player" : "Multiplayer"}`;
-lobbyCount.textContent = `Jumlah Pemain: ${playerCount}`;
+const username = localStorage.getItem('username') || 'Guest';
+const profileImage = localStorage.getItem('profileImage') || '../public/img/profile.jpg';
+const playersMax = parseInt(localStorage.getItem('playerCount') || '8', 10);
 
-// Sound click
-function playClick() {
-  clickSound.currentTime = 0;
-  clickSound.play();
+let room = localStorage.getItem('roomId');
+if(!room){
+  room = 'R' + playersMax + '-' + Math.random().toString(36).slice(2,7).toUpperCase();
+  localStorage.setItem('roomId', room);
 }
 
-// Generate list pemain (dummy dulu)
-function generatePlayers(count) {
-  playerList.innerHTML = "";
+myNameEl.textContent = username;
+myPP.src = profileImage;
+roomIdEl.textContent = room;
+playersMaxEl.textContent = playersMax;
 
-  const roles = assignRoles(count);
-
-  for (let i = 1; i <= count; i++) {
-    const div = document.createElement("div");
-    div.classList.add("player-card");
-    div.innerHTML = `<strong>Player ${i}</strong><br><span class="role hidden">????</span>`;
-    playerList.appendChild(div);
-  }
-
-  localStorage.setItem("assignedRoles", JSON.stringify(roles));
-}
-generatePlayers(playerCount);
-
-
-// Pembagian role otomatis
-function assignRoles(count) {
-  const roles = [];
-
-  if (count === 5) {
-    roles.push("Mafia");
-    for (let i = 0; i < 4; i++) roles.push("Warga");
-  } else if (count === 8) {
-    roles.push("Mafia", "Mafia");
-    while (roles.length < 8) roles.push("Warga");
-  } else if (count === 12) {
-    roles.push("Mafia", "Mafia", "Mafia", "Dokter", "Dokter");
-    while (roles.length < 12) roles.push("Warga");
-  } else if (count === 15) {
-    roles.push("Mafia", "Mafia", "Mafia", "Detektif", "Detektif", "Dokter", "Dokter");
-    while (roles.length < 15) roles.push("Warga");
-  } else if (count === 18) {
-    roles.push(
-      "Mafia", "Mafia", "Mafia",
-      "Detektif", "Detektif",
-      "Dokter", "Dokter",
-      "Couple", "Couple"
-    );
-    while (roles.length < 18) roles.push("Warga");
-  } else if (count === 20) {
-    roles.push(
-      "Mafia", "Mafia", "Mafia",
-      "Detektif", "Detektif",
-      "Dokter", "Dokter",
-      "Couple", "Couple",
-      "Spy", "Spy",
-      "Arsonist"
-    );
-    while (roles.length < 20) roles.push("Warga");
-  }
-
-  // Acak role agar random tiap main
-  return roles.sort(() => Math.random() - 0.5);
-}
-
-// Tombol kembali (hanya single mode)
-if (mode === "single") {
-  backBtn.addEventListener("click", () => {
-    playClick();
-    document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "home.html";
-    }, 500);
-  });
-} else {
-  backBtn.style.display = "none";
-}
-
-// Tombol mulai game
-startGameBtn.addEventListener("click", () => {
-  playClick();
-  startGameBtn.textContent = "Loading...";
-  startGameBtn.disabled = true;
-  setTimeout(() => {
-    window.location.href = "Sgame.html";
-  }, 800);
+window.addEventListener('click', function unlock(){
+  clickSound.play().then(()=>{clickSound.pause();clickSound.currentTime=0}).catch(()=>{});
+  window.removeEventListener('click', unlock);
 });
+
+function playClick(){ clickSound.currentTime = 0; clickSound.play().catch(()=>{}); }
+
+socket.on('connect', () => {
+  console.log('connected', socket.id);
+  socket.emit('joinLobby', { username, room });
+});
+
+socket.on('playerList', (list) => {
+  renderPlayers(list);
+  playersCountEl.textContent = list.length;
+  if(list.length >= playersMax){
+    startCountdown(10);
+  }
+});
+
+socket.on('chatMessage', ({username: from, msg}) => {
+  appendChat(from, msg);
+});
+
+btnSend.addEventListener('click', () => {
+  const msg = chatInput.value.trim();
+  if(!msg) return;
+  playClick();
+  socket.emit('chatMessage', { room, username, msg });
+  appendChat(username + ' (you)', msg);
+  chatInput.value = '';
+});
+
+chatInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') btnSend.click(); });
+
+btnBackHome.addEventListener('click', () => {
+  playClick();
+  localStorage.removeItem('roomId');
+  window.location.href = 'home.html';
+});
+btnViewPlayers.addEventListener('click', () => { playClick(); alert(playersList.innerText || 'Belum ada pemain'); });
+btnReady.addEventListener('click', () => {
+  playClick();
+  alert('Siap! Tunggu pemain lain...');
+  socket.emit('chatMessage', { room, username, msg: 'Siap!' });
+});
+
+function appendChat(from, text){
+  const div = document.createElement('div');
+  div.style.marginBottom = '8px';
+  div.innerHTML = `<b>${escapeHtml(from)}:</b> ${escapeHtml(text)}`;
+  chatLog.appendChild(div);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+function renderPlayers(list){
+  playersList.innerHTML = '';
+  list.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'player-item';
+    el.innerHTML = `
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00eaff,#0077ff);display:inline-block;text-align:center;line-height:36px;font-weight:700;color:#001">
+        ${p.username.charAt(0).toUpperCase()}
+      </div>
+      <div>
+        <div style="font-weight:700">${escapeHtml(p.username)}</div>
+        <div style="font-size:12px;opacity:0.8">${p.id === socket.id ? 'You' : 'Player'}</div>
+      </div>`;
+    playersList.appendChild(el);
+  });
+}
+
+let countdownRunning = false;
+function startCountdown(start){
+  if(countdownRunning) return;
+  countdownRunning = true;
+  countNum.textContent = start;
+  countOverlay.style.display = 'flex';
+  let t = start;
+  const iv = setInterval(()=>{
+    t--;
+    countNum.textContent = t;
+    if(t <= 0){
+      clearInterval(iv);
+      countOverlay.querySelector('.small').textContent = 'GAME DIMULAI!!!';
+      setTimeout(()=>{ window.location.href = 'Mgame.html'; }, 900);
+    }
+  }, 1000);
+}
+
+function escapeHtml(s){
+  return (s+'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+socket.on('disconnect', ()=>{ console.log('socket disconnected'); });

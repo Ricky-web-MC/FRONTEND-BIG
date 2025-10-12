@@ -1,39 +1,72 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAFIA - Lobby</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MAFIA - Lobby (Multiplayer)</title>
   <link rel="stylesheet" href="../mafiaDecorate/lobby.css">
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 </head>
 <body>
   <video autoplay muted loop class="bgVideo">
-    <source src="../public/video/lobby.mp4" type="video/mp4">
+    <source src="../public/video/fantasyc.mp4" type="video/mp4">
   </video>
+  <div class="overlay"></div>
 
-  <div class="lobby-container fade-in">
-    <h1 class="lobby-title">LOBBY</h1>
+  <div class="card" id="card">
+    <div>
+      <div class="top-user">
+        <img id="myPP" class="pp" src="../public/img/profile.jpg" alt="pp">
+        <div>
+          <div class="me" id="myName">Guest</div>
+          <div class="meta">
+            Room: <span id="roomId">-</span> • Players: 
+            <span id="playersCount">0</span>/<span id="playersMax">0</span>
+          </div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button id="btnBackHome" class="btn ghost">Kembali</button>
+          <button id="btnShowChat" class="btn ghost">Chat</button>
+        </div>
+      </div>
 
-    <div class="player-info">
-      <img id="lobbyProfilePic" class="lobby-pp" src="../public/img/profile.jpg" alt="pp">
-      <p id="lobbyUsername" class="lobby-username">Guest</p>
-      <p id="lobbyMode" class="lobby-mode">Mode: ???</p>
-      <p id="lobbyCount" class="lobby-count">Jumlah Pemain: ???</p>
+      <div class="chat-area">
+        <div id="chatLog" class="chat-log"></div>
+
+        <div class="chat-input">
+          <input id="chatInput" placeholder="Ketik pesan..." autocomplete="off">
+          <button id="btnSend" class="btn">Kirim</button>
+        </div>
+      </div>
     </div>
 
-    <div id="playerList" class="player-list"></div>
+    <aside class="side">
+      <div class="players-card">
+        <h4>Daftar Pemain</h4>
+        <div id="playersList"></div>
+      </div>
 
-    <div class="lobby-buttons">
-      <button id="backBtn" class="back-btn">Kembali</button>
-      <button id="startGameBtn" class="start-btn">Mulai Game</button>
-    </div>
+      <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+        <div>
+          <button id="btnViewPlayers" class="btn">Lihat Player</button>
+        </div>
+        <div>
+          <button id="btnReady" class="btn">Siap</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div id="countOverlay" class="overlay-count" style="display:none">
+    <div class="small">Game akan segera dimulai dalam</div>
+    <div id="countNum" class="countbox">10</div>
+    <div class="small">Siapkan dirimu...</div>
   </div>
 
   <audio id="clickSound">
-    <source src="../public/sound/button-305770.mp3" type="audio/mpeg">
+    <source src="../public/sound/button.mp3" type="audio/mpeg">
   </audio>
 
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
   <script src="../mafiaInteract/lobby.js"></script>
 </body>
 </html>
