@@ -67,11 +67,17 @@ btnSend.addEventListener('click', () => {
 
 chatInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') btnSend.click(); });
 
+
 btnBackHome.addEventListener('click', () => {
   playClick();
+  document.body.classList.add('page-fade-out');
+  setTimeout (() => {
   localStorage.removeItem('roomId');
   window.location.href = 'home.html';
+  }, 500);
 });
+
+
 btnViewPlayers.addEventListener('click', () => { playClick(); alert(playersList.innerText || 'Belum ada pemain'); });
 btnReady.addEventListener('click', () => {
   playClick();

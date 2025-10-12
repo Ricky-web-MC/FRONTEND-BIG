@@ -12,7 +12,14 @@ body {
   background: #040406;
   font-family: Inter, system-ui, Arial;
   color: #eee;
+  animation: fadeIn 0.5s ease;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .bgVideo {
   position: fixed;
   inset: 0;
@@ -51,9 +58,18 @@ body {
   height: 54px;
   border-radius: 50%;
   border: 3px solid cyan;
+  box-shadow: 0 0 10px white;
   object-fit: cover;
 }
-.me { font-weight: 800; color: var(--accent); }
+.me { 
+  color: yellow;
+  font-size: 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin: 10px 0;
+  text-shadow: 0 0 8px cyan;
+}
+
 .meta { font-size: 13px; opacity: 0.9; }
 
 .chat-area {
@@ -119,11 +135,28 @@ body {
   color: #001;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
+
+.btn:hover {
+  box-shadow: 0 0 5px cyan, 0 0 10px cyan;
+  transform: scale(1.05);
+  background: cyan;
+  color: #fc0a0a; 
+}
+
 .btn.ghost {
   background: transparent;
   border: 2px solid rgba(255,255,255,0.06);
-  color: #fff;
+  color: #fc0a0a;
+  transition: all 0.3s ease;
+}
+
+.btn.ghost:hover {
+  box-shadow: 0 0 10px cyan, 0 0 20px cyan;
+  transform: scale(1.08);
+  background: #001;
+  color: #fc0a0a;
 }
 
 .overlay-count {
@@ -145,4 +178,13 @@ body {
   .card{grid-template-columns:1fr}
   .side{order:2}
   .chat-area{order:1;height:60vh}
+}
+
+.page-fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }

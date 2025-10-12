@@ -1,3 +1,7 @@
+// home.js
+// ==================== UPDATE: support Public room creation + Enter Room ID flow
+// ==================== UPDATE: fix button click sound (unlock & global binding) ====================
+
 // ambil elemen utama
 const introSection = document.getElementById("intro-section");
 const introPic = document.getElementById("introPic");
@@ -16,14 +20,14 @@ const soundBtn = document.getElementById("soundBtn");
 const bgMusic = document.getElementById("bgMusic");
 
 const modeSelect = document.getElementById("mode-select");
-const singleBtn = document.getElementById("singleBtn");
-const multiBtn = document.getElementById("multiBtn");
+const publicBtn = document.getElementById("publicBtn"); // UPDATE
+const roomIdInput = document.getElementById("roomIdInput"); // UPDATE
+const joinBtn = document.getElementById("joinBtn"); // UPDATE
 const playerSelect = document.getElementById("player-select");
-const confirmPlayerBtn = document.getElementById("confirmPlayerBtn");
+const confirmPlayerBtn = document.getElementById("confirmPlayerBtn"); // legacy (may be undefined)
 const cancelPLayerBtn = document.getElementById("cancelPLayerBtn")
 const playerCount = document.getElementById("playerCount");
-const clickSound = document.getElementById("clickSound")
-
+const clickSound = document.getElementById("clickSound");
 
 // ==================== LOAD PROFIL ====================
 window.addEventListener("load", () => {
@@ -37,8 +41,6 @@ window.addEventListener("load", () => {
     container.style.display = "block";
   }
 });
-
-
 
 // ==================== INTRO SUBMIT ====================
 introSubmit.addEventListener("click", () => {
@@ -76,8 +78,6 @@ function hideIntro() {
   }, 500);
 }
 
-
-
 // ==================== INTRO CANCEL ====================
 introCancel.addEventListener("click", () => {
   introSection.classList.add("fade-out");
@@ -88,8 +88,6 @@ introCancel.addEventListener("click", () => {
   }, 500);
 });
 
-
-
 // ==================== EDIT PROFILE ====================
 editProfileBtn.addEventListener("click", () => {
   container.classList.add("fade-out");
@@ -99,21 +97,16 @@ editProfileBtn.addEventListener("click", () => {
     introSection.classList.remove("fade-out");
     introSection.classList.add("active");
 
-
-
-    // preload data lama biar bisa disunting
+    // preload data lama
     const savedName = localStorage.getItem("username");
     const savedImage = localStorage.getItem("profileImage");
     if (savedName) introName.value = savedName;
     if (savedImage) {
-      // preview di label PP intro
       const imgPreview = document.querySelector("#intro-section img");
       if (imgPreview) imgPreview.src = savedImage;
     }
   }, 500);
 });
-
-
 
 // ==================== UPLOAD FOTO ====================
 profilePic.addEventListener("click", () => uploadPic.click());
@@ -134,7 +127,7 @@ uploadPic.addEventListener("change", (e) => {
 let isPlaying = false;
 soundBtn.addEventListener("click", () => {
   if (!isPlaying) {
-    bgMusic.play();
+    bgMusic.play().catch(()=>{});
     soundBtn.textContent = "⏸";
   } else {
     bgMusic.pause();
@@ -148,91 +141,110 @@ startBtn.addEventListener("click", () => {
   container.classList.add("fade-out");
   setTimeout(() => {
     container.style.display = "none";
-    modeSelect.classList.remove("hidden");
+
+    modeSelect.classList.remove("hidden", "fade-out");
+    modeSelect.style.display = "block";
     modeSelect.classList.add("fade-in");
   }, 500);
 });
 
-// ==================== PILIH MODE ====================
-let selectedMode = null;
+// ==================== CANCEL PLAYER ====================
+if (cancelPLayerBtn) {
+  cancelPLayerBtn.addEventListener("click", () => {
 
-function setActiveMode(btn) {
-  singleBtn.classList.remove("active-mode");
-  multiBtn.classList.remove("active-mode");
-  btn.classList.add("active-mode");
+    modeSelect.classList.remove("fade-in");
+    modeSelect.classList.add("fade-out");
+    
+    setTimeout(() => {
+      
+      modeSelect.classList.add("hidden");
+      modeSelect.style.display = "none";
+
+      container.style.display = "block";
+      container.classList.remove("fade-out");
+      container.classList.add("fade-in");
+
+    }, 500);
+  });
 }
 
-singleBtn.addEventListener("click", () => {
-  setActiveMode(singleBtn);
-  selectedMode = "single";
-  playerSelect.classList.remove("hidden");
-});
-
-multiBtn.addEventListener("click", () => {
-  setActiveMode(multiBtn);
-  selectedMode = "multi";
-  playerSelect.classList.remove("hidden");
-});
-
-
-// ==================== KONFIRMASI PLAYER ====================
-confirmPlayerBtn.addEventListener("click", () => {
-  if (!selectedMode) {
-    alert("Pilih dulu mode permainan!");
-    return;
-  }
-  localStorage.setItem("mode", selectedMode);
-  localStorage.setItem("playerCount", playerCount.value);
-
-  document.body.classList.add("page-fade-out");
-
-  setTimeout(() => {
-    window.location.href = "lobby.html";
-  }, 600);
-});
-
-// ==================== CANCEL PLAYER ====================
-cancelPLayerBtn.addEventListener("click", () => {
-  playerSelect.classList.add("fade-out");
-  setTimeout(() => {
-    playerSelect.classList.add("hidden");
-    modeSelect.classList.add("hidden");
-
-    playerSelect.classList.remove("fade-out");
-    modeSelect.classList.remove("fade-in");
-    modeSelect.classList.remove("fade-out");
-
-    container.style.display = "block";
-    container.classList.remove("fade-out");
-    container.classList.add("fade-in");
-
-    const modeButton = document.querySelectorAll(".mode-buttons button");
-    modeButton.forEach(btn => btn.classList.remove("active-mode"));
-
-    selectedMode = null;
-    localStorage.removeItem("mode");
-  }, 500);
-});
-
-
-
-//=====================SOUND SYSTEM==================//
-const tombolList = document.querySelectorAll("button");
-
-tombolList.forEach(btn => {
-  btn.addEventListener("click", () => {
+// ==================== UPDATE: Button sound (unlock & global binding) ====================
+function playClickSound() {
+  try {
+    if (!clickSound) return;
     clickSound.currentTime = 0;
+    clickSound.play().catch(()=>{});
+  } catch (e) { /* ignore */ }
+}
 
-    clickSound.play().catch(err => console.warn("gagal play sound:", err));
-  });
-});
-
-//unlock audio klick button//
+// Unlock audio on first user gesture to avoid browser blocking
 window.addEventListener("click", function unlockAudio() {
+  if (!clickSound) return;
   clickSound.play().then(() => {
     clickSound.pause();
     clickSound.currentTime = 0;
-    console.log("audio unlocked");
-    this.window.removeEventListener("click", unlockAudio);
-  }).catch(err => console.warn("audio belum bisa diputar:", err));
+    window.removeEventListener("click", unlockAudio);
+    // console.log('audio unlocked');
+  }).catch(()=>{});
 });
+
+// attach click sound to all buttons (works even for buttons added later)
+document.addEventListener('click', (e) => {
+  const t = e.target;
+  if (t.tagName === 'BUTTON') playClickSound();
+});
+
+// ==================== UPDATE: Public / Join Room Flow ====================
+
+// helper to generate room id
+function genRoomCode(maxPlayers) {
+  // ex: R8-ABC12
+  const rnd = Math.random().toString(36).slice(2, 7).toUpperCase();
+  return `R${maxPlayers}-${rnd}`;
+}
+
+// when user clicks Public (create room)
+publicBtn.addEventListener('click', () => {
+  const username = localStorage.getItem('username') || 'Guest';
+  const players = parseInt(playerCount.value || '8', 10);
+  const roomCode = genRoomCode(players);
+
+  // store room + playerCount locally so lobby picks it up
+  localStorage.setItem('roomId', roomCode);
+  localStorage.setItem('playerCount', players.toString());
+
+  // navigate to lobby immediately
+  // use small fade for UX
+  document.body.classList.add('page-fade-out');
+  setTimeout(() => {
+    window.location.href = "lobby.html";
+  }, 450);
+});
+
+// when user clicks Join (enter id)
+joinBtn.addEventListener('click', () => {
+  const typed = (roomIdInput.value || '').trim();
+  if (!typed) {
+    alert('Masukkan ID room yang valid (contoh: R8-ABC12)');
+    return;
+  }
+  // store room and (optional) playerCount if user selected
+  localStorage.setItem('roomId', typed);
+  localStorage.setItem('playerCount', playerCount.value || '8');
+  document.body.classList.add('page-fade-out');
+  setTimeout(() => {
+    window.location.href = "lobby.html";
+  }, 450);
+});
+
+// convenience: enter on input triggers join
+roomIdInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') joinBtn.click(); });
+
+// If user came from somewhere with a room prefilled (e.g. copy/paste), show it
+const existingRoom = localStorage.getItem('roomId');
+if (existingRoom) {
+  roomIdInput.value = existingRoom;
+}
+
+// safety: fallback values
+if (!playerCount.value) playerCount.value = '8';

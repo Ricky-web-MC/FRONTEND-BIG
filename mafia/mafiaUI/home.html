@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MAFIA - Home</title>
   <link rel="stylesheet" href="../mafiaDecorate/home.css" />
   <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
@@ -23,56 +23,57 @@
     </div>
   </div>
 
-
   <div class="container">
     <h1 class="title">MAFIA</h1>
 
     <div id="profile-container">
-        <img id="profilePic" src="img/profile.jpg" alt="unggah foto" class="profile-pic"/>
-        <input type="file" name="" id="uploadPic" accept="image/*" hidden>
-      </div>
-      
-      <p id="usernameDisplay" class="username-display">Guest</p>
-      <button id="editProfileBtn" class="edit-btn">Edit Profile</button>
+      <img id="profilePic" src="img/profile.jpg" alt="unggah foto" class="profile-pic"/>
+      <input type="file" id="uploadPic" accept="image/*" hidden>
+    </div>
 
-      <p>play <button id="soundBtn" class="sound-btn">▶</button> music</p>
-      <button id="startBtn" class="start-btn">Mulai</button>
+    <p id="usernameDisplay" class="username-display">Guest</p>
+    <button id="editProfileBtn" class="edit-btn">Edit Profile</button>
 
-      
-      <audio id="bgMusic" loop>
-        <source src="../public/sound/fantasyFX1.mp3" type="audio/mpeg" />
-      </audio>
+    <p>play <button id="soundBtn" class="sound-btn">▶</button> music</p>
+    <button id="startBtn" class="start-btn">Mulai</button>
+
+    <audio id="bgMusic" loop>
+      <source src="../public/sound/fantasyFX1.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
+  <!-- ==================== UPDATE: New room UI - Public / Enter Room ID ==================== -->
+  <div id="mode-select" class="hidden fade-in">
+    <h2>Buat atau Masuk Ruang</h2>
+
+    <div class="mode-buttons">
+      <button id="publicBtn">Main (Public)</button>
+    </div>
+
+    <div id="join-block" style="margin-top:10px;">
+      <label for="roomIdInput">Masukkan ID Room (jika sudah ada):</label><br>
+      <input id="roomIdInput" placeholder="Contoh: R8-ABC12" style="padding:8px;border-radius:8px;border:2px solid cyan;background:rgba(0,0,0,0.5);color:#fff">
+      <button id="joinBtn" class="tombolKonfirm">Masuk</button>
+    </div>
+
+    <div id="player-select" style="margin-top:12px;">
+      <label for="playerCount">Pilih Jumlah Pemain (5-20):</label>
+      <select id="playerCount">
+        <option value="5">5 Pemain</option>
+        <option value="8" selected>8 Pemain</option>
+        <option value="12">12 Pemain</option>
+        <option value="15">15 Pemain</option>
+        <option value="18">18 Pemain</option>
+        <option value="20">20 Pemain</option>
+      </select>
+      <button id="cancelPLayerBtn" class="tombolKonfirm">Batal</button>
     </div>
   </div>
-  
-      <!-- Tambahkan di bawah tombol Mulai -->
-    <div id="mode-select" class="hidden fade-in">
-    <h2>Pilih Mode</h2>
-    <div class="mode-buttons">
-    <button id="singleBtn">Singleplayer</button>
-    <button id="multiBtn">Multiplayer</button>
-    </div>
 
-    <div id="player-select" class="hidden">
-    <label for="playerCount">Pilih Jumlah Pemain:</label>
-    <select id="playerCount">
-    <option value="5">5 Pemain</option>
-    <option value="8">8 Pemain</option>
-    <option value="12">12 Pemain</option>
-    <option value="15">15 Pemain</option>
-    <option value="18">18 Pemain</option>
-    <option value="20">20 Pemain</option>
-    </select>
-    <button id="confirmPlayerBtn" class="tombolKonfirm">Main</button>
-    <button id="cancelPLayerBtn" class="tombolKonfirm">Kembali</button>
-    </div>
-    </div>
+  <audio id="clickSound">
+    <source src="../public/sound/button.mp3" type="audio/mpeg">
+  </audio>
 
-    
-    <script src="../mafiaInteract/home.js"></script>
-    
-    <audio id="clickSound">
-      <source src="../public/sound/button.mp3" type="audio/mpeg">
-    </audio>
+  <script src="../mafiaInteract/home.js"></script>
 </body>
 </html>
