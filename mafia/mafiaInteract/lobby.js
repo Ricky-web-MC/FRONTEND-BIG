@@ -34,7 +34,7 @@ function generatePlayers(count) {
   for (let i = 1; i <= count; i++) {
     const div = document.createElement("div");
     div.classList.add("player-card");
-    div.innerHTML = `<strong>Player ${i}</strong><br><span class="role hidden">${roles[i - 1]}</span>`;
+    div.innerHTML = `<strong>Player ${i}</strong><br><span class="role hidden">????</span>`;
     playerList.appendChild(div);
   }
 

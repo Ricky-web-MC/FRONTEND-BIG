@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MAFIA - Singleplayer</title>
+  <link rel="stylesheet" href="../mafiaDecorate/Sgame.css" />
+</head>
+<body>
+  <video autoplay muted loop class="bgVideo">
+    <source src="../public/video/fantasyc.mp4" type="video/mp4">
+  </video>
+
+  <div class="overlay"></div>
+
+  <div class="game-wrap">
+    <header>
+      <div class="left">
+        <img id="playerAvatar" src="../public/img/profile.jpg" alt="pp" />
+        <div>
+          <div id="playerName">Guest</div>
+          <div id="playerRole" class="role-badge">--</div>
+        </div>
+      </div>
+
+      <div class="center">
+        <div id="phaseLabel">Menunggu...</div>
+        <div id="phaseTimer">--</div>
+      </div>
+
+      <div class="right">
+        <button id="btnPlayers" class="btn small">Lihat Jumlah Pemain</button>
+        <button id="btnTasks" class="btn small">Lihat Tugas</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="board" id="board">
+        <!-- kotak sentral untuk pesan besar (role reveal / game mulai / hasil) -->
+        <div id="centerMessage" class="centerMessage hidden"></div>
+      </section>
+
+      <aside class="sidebar">
+        <h3>Daftar Pemain</h3>
+        <ul id="playersList"></ul>
+
+        <h3>Log</h3>
+        <div id="gameLog" class="log"></div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="controls">
+        <button id="btnRestart" class="btn">Restart</button>
+        <button id="btnBack" class="btn">Kembali ke Lobby</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- modal players -->
+  <div id="modalPlayers" class="modal hidden">
+    <div class="modal-inner">
+      <h3>Jumlah Pemain & Role</h3>
+      <ul id="modalPlayersList"></ul>
+      <button class="btn" id="closeModalPlayers">Tutup</button>
+    </div>
+  </div>
+
+  <!-- modal tasks -->
+  <div id="modalTasks" class="modal hidden">
+    <div class="modal-inner">
+      <h3>Tugas Role</h3>
+      <div id="taskText"></div>
+      <button class="btn" id="closeModalTasks">Tutup</button>
+    </div>
+  </div>
+
+  <audio id="clickSound" src="../public/sound/button.mp3" preload="auto"></audio>
+
+  <script src="../mafiaInteract/Sgame.js"></script>
+</body>
+</html>

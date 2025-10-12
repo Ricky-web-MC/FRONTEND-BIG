@@ -214,22 +214,25 @@ cancelPLayerBtn.addEventListener("click", () => {
   }, 500);
 });
 
-// const sounds = {
-//   start: new Audio("../public/sound/button.mp3"),
-// }
 
-// function playSound(type = "generic") {
-//   const audio = sounds[type] || sounds.generic;
-//   audio.currentTime = 0;
-//   audio.play().catch(err => console.warn("gagal play:", err));
-// }
 
-// window.addEventListener("click", function unlockAudio() {
-//     Object.values(sounds).forEach(a => {
-//       a.play().then(() => {
-//         a.pause();
-//         a.currentTime = 0;
-//       });
-//     });
-//     window.removeEventListener("click", unlockAudio);
-// });
+//=====================SOUND SYSTEM==================//
+const tombolList = document.querySelectorAll("button");
+
+tombolList.forEach(btn => {
+  btn.addEventListener("click", () => {
+    clickSound.currentTime = 0;
+
+    clickSound.play().catch(err => console.warn("gagal play sound:", err));
+  });
+});
+
+//unlock audio klick button//
+window.addEventListener("click", function unlockAudio() {
+  clickSound.play().then(() => {
+    clickSound.pause();
+    clickSound.currentTime = 0;
+    console.log("audio unlocked");
+    this.window.removeEventListener("click", unlockAudio);
+  }).catch(err => console.warn("audio belum bisa diputar:", err));
+});
