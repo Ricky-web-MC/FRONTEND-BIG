@@ -1,74 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MAFIA - Multiplayer Game</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAFIA - Game Room</title>
   <link rel="stylesheet" href="../mafiaDecorate/Mgame.css" />
   <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 </head>
 <body>
-  <video autoplay muted loop class="bgVideo"><source src="../public/video/fantasyc.mp4" type="video/mp4"></video>
-  <div class="overlay"></div>
+  <div class="container">
+    <header>
+      <h1 class="judul">🎭 Mafia Multiplayer</h1>
+      <div id="phase" class="phase">Menunggu pemain lain...</div>
+      <div id="roleDisplay" class="roleDisplay">Peran kamu: -</div>
+    </header>
 
-  <div class="wrap">
-    <aside class="leftPane">
-      <div class="meTop">
-        <img id="myPP" class="pp" src="../public/img/profile.jpg" alt="pp">
-        <div class="meInfo">
-          <div id="myName" class="meName">Guest</div>
-          <div class="meta">Room: <span id="roomId">-</span></div>
-        </div>
-      </div>
-
-      <div class="gameArea">
-        <div id="phaseLabel" class="phaseLabel">Menunggu...</div>
-        <div id="centerArea" class="centerArea">
-          <div id="centerText" class="centerText">Menunggu pemain lain...</div>
-          <div id="phaseTimer" class="phaseTimer">--</div>
-        </div>
-
-        <div id="actionArea" class="actionArea hidden">
-          <!-- dynamic action area (night targets / vote UI) -->
-        </div>
-      </div>
-
-      <div class="controlsBottom">
-        <button id="btnLeave" class="btn ghost">Kembali</button>
-        <button id="btnOpenChat" class="btn ghost">Chat</button>
-      </div>
-    </aside>
-
-    <main class="rightPane">
-      <section class="playersCard">
-        <h4>Daftar Pemain <small id="playersCount">0</small>/<span id="playersMax">0</span></h4>
-        <div id="playersList" class="playersList"></div>
+    <main class="main-area">
+      <section class="left">
+        <h2>🗒 Log Aktivitas</h2>
+        <div id="log" class="logBox"></div>
       </section>
 
-      <section class="chatCard">
-        <div id="chatLog" class="chatLog"></div>
-        <div class="chatInputWrap">
-          <input id="chatInput" placeholder="Ketik pesan..." autocomplete="off">
-          <button id="btnSend" class="btn">Kirim</button>
+      <section class="right">
+        <h2>💬 Chat</h2>
+        <div id="chatBox" class="chatBox"></div>
+        <div class="chatInput">
+          <input type="text" id="chatInput" placeholder="Ketik pesan..." />
+          <button id="btnChat">Kirim</button>
+        </div>
+
+        <div class="voteBox">
+          <h3>🗳 Voting</h3>
+          <input type="text" id="voteTarget" placeholder="Nama target..." />
+          <button id="btnVote">Vote</button>
         </div>
       </section>
     </main>
+
+    <footer>
+      <p>Game dibuat oleh tim MafiaGang 💀</p>
+    </footer>
   </div>
 
-  <!-- role reveal modal -->
-  <div id="roleModal" class="modal hidden">
-    <div class="modalBox">
-      <div class="roleTitle">KAMU ADALAH</div>
-      <div id="roleBadge" class="roleBadge">VILLAGER</div>
-      <div id="roleDesc" class="roleDesc">Deskripsi role singkat.</div>
-      <button id="btnRoleOk" class="btn">Siap</button>
-    </div>
-  </div>
-
-
-  <audio id="clickSound"><source src="../public/sound/button.mp3" type="audio/mpeg"></audio>
-
-  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-  <script src="../mafiaInteract/Mgame.js"></script>
+  <script type="module" src="../mafiaInteract/Mgame.js"></script>
 </body>
 </html>
