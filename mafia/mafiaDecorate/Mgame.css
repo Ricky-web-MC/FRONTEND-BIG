@@ -1,8 +1,30 @@
 /* Mgame.css - day -> sunset -> night animation + clean UI */
 :root{--accent:#ff4d6d;--cyan:#00eaff}
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial;color:#eee;background:#020203}
-.bgVideo{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3;filter:brightness(30%) contrast(110%) saturate(120%)}
+html,body{
+  height:100%;
+  margin:0;
+  font-family:Inter,system-ui,Arial;
+  color:#eee;
+  background:#020203;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.bgVideo{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-3;
+  filter:brightness(30%) contrast(110%) saturate(120%)
+}
+
 .overlay{position:fixed;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.3));z-index:-2}
 
 .wrap{display:flex;gap:16px;width:95%;max-width:1100px;margin:36px auto;align-items:flex-start}
@@ -45,7 +67,18 @@ html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial;color:#eee;back
 .btn.ghost{background:transparent;border:2px solid rgba(255,255,255,0.06);color:#fff}
 
 /* notif card */
-.notifCard{position:fixed;left:50%;transform:translateX(-50%);top:16px;background:linear-gradient(135deg,#111,rgba(255,255,255,0.02));padding:12px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6);z-index:80;color:#ffd;font-weight:700}
+.notifCard{
+  position:fixed;
+  top:16px;
+  left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(135deg,#111,rgba(255,255,255,0.02));
+  padding:12px 18px;
+  border-radius:12px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.6);
+  z-index:80;
+  color:#ffd;font-weight:700
+}
 
 /* modal (role reveal) */
 .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);z-index:60}
