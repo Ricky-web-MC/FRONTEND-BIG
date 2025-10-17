@@ -96,3 +96,25 @@ html,body{
   .rightPane{width:100%}
   .sunArea{height:200px}
 }
+
+/* action card for role action & voting */
+.actionCard {
+  padding: 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.actionCard h4 {
+  margin: 0 0 8px 0;
+  color: var(--cyan);
+}
+.actionCard p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+.targetList, .voteList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}

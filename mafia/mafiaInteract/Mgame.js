@@ -1,6 +1,6 @@
-// Mgame.js - Updated untuk konek ke backend (sync dengan server.js)
+// Mgame.js - Updated untuk konek ke backend (sync dengan server.js) + Role Action & Voting UI
 
-const SOCKET_URL = "http://localhost:3000"; // Ganti ke URL server kamu
+const SOCKET_URL = "https://backend-production-09796.up.railway.app"; // Ganti ke URL server kamu
 const socket = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
 
 /* elements */
@@ -121,7 +121,19 @@ socket.on('nightStart', (data) => {
   skyOverlay.classList.add('night');
   sun.style.bottom = '-360px';
   phaseTimer.textContent = '--';
-  actionArea.classList.add('hidden'); // clear any previous UI
+  actionArea.classList.remove('hidden');
+  showRoleActionCard();
+});
+
+/* server starts day phase */
+socket.on('dayStart', (data) => {
+  phaseLabel.textContent = 'Siang';
+  centerText.textContent = 'Pagi tiba. Diskusi dimulai.';
+  skyOverlay.classList.remove('night', 'sunset');
+  skyOverlay.classList.add('day');
+  sun.style.bottom = '-40px';
+  actionArea.classList.remove('hidden');
+  showVotingCard();
 });
 
 /* server sends action taken by a player */
@@ -136,15 +148,6 @@ socket.on('nightResult', (results) => {
       appendChat('SYSTEM', `${r.username} telah mati.`);
     }
   });
-});
-
-/* server starts day phase */
-socket.on('dayStart', (data) => {
-  phaseLabel.textContent = 'Siang';
-  centerText.textContent = 'Pagi tiba. Diskusi dimulai.';
-  skyOverlay.classList.remove('night', 'sunset');
-  skyOverlay.classList.add('day');
-  sun.style.bottom = '-40px';
 });
 
 /* server sends voting result */
@@ -223,6 +226,107 @@ function roleDescription(role){
     villager: 'Warga: tidak punya aksi, voting saat siang.'
   };
   return map[role] || 'Warga biasa.';
+}
+
+/* role action card (only for roles with night actions) */
+function showRoleActionCard() {
+  actionArea.innerHTML = '';
+
+  if (!meRole || !['mafia', 'detective', 'doctor', 'spy', 'arsonist'].includes(meRole)) {
+    actionArea.innerHTML = `<div class="actionCard">Kamu tidak punya aksi malam ini.</div>`;
+    return;
+  }
+
+  const card = document.createElement('div');
+  card.className = 'actionCard';
+  card.innerHTML = `
+    <h4>${meRole.toUpperCase()}</h4>
+    <p>Pilih target untuk aksi malammu:</p>
+    <div class="targetList"></div>
+    <button id="submitAction" class="btn">Kirim Aksi</button>
+  `;
+  actionArea.appendChild(card);
+
+  const targetList = card.querySelector('.targetList');
+  const submitBtn = card.querySelector('#submitAction');
+
+  players.forEach(p => {
+    if (p.id === meId) return; // Tidak bisa pilih diri sendiri
+
+    const btn = document.createElement('button');
+    btn.className = 'btn ghost';
+    btn.textContent = p.username;
+    btn.onclick = () => {
+      Array.from(targetList.children).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    };
+    targetList.appendChild(btn);
+  });
+
+  submitBtn.onclick = () => {
+    const selected = targetList.querySelector('.selected');
+    if (!selected) {
+      alert('Pilih target terlebih dahulu!');
+      return;
+    }
+
+    const targetName = selected.textContent;
+    const target = players.find(p => p.username === targetName);
+    if (!target) return;
+
+    socket.emit('playerAction', { room, username, role: meRole, target: targetName });
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Terkirim...';
+    showNotif(`Kamu memilih ${targetName}`);
+  };
+}
+
+/* voting card (for day phase) */
+function showVotingCard() {
+  actionArea.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'actionCard';
+  card.innerHTML = `
+    <h4>Voting</h4>
+    <p>Pilih siapa yang akan dieksekusi:</p>
+    <div class="voteList"></div>
+    <button id="submitVote" class="btn">Kirim Vote</button>
+  `;
+  actionArea.appendChild(card);
+
+  const voteList = card.querySelector('.voteList');
+  const submitBtn = card.querySelector('#submitVote');
+
+  players.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'btn ghost';
+    btn.textContent = p.username;
+    btn.onclick = () => {
+      Array.from(voteList.children).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    };
+    voteList.appendChild(btn);
+  });
+
+  submitBtn.onclick = () => {
+    const selected = voteList.querySelector('.selected');
+    if (!selected) {
+      alert('Pilih target terlebih dahulu!');
+      return;
+    }
+
+    const targetName = selected.textContent;
+    const target = players.find(p => p.username === targetName);
+    if (!target) return;
+
+    socket.emit('votePlayer', { room, voter: username, target: targetName });
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Terkirim...';
+    showNotif(`Kamu memilih ${targetName}`);
+  };
 }
 
 /* expose for debugging */

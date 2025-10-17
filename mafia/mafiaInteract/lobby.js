@@ -143,7 +143,7 @@ function startCountdown(start){
       clearInterval(iv);
       countOverlay.querySelector('.small').textContent = 'GAME DIMULAI!!!';
       setTimeout(()=>{
-        window.location.href = 'Mgame.html';
+        window.location.href = 'game.html';
       }, 900);
     }
   }, 1000);

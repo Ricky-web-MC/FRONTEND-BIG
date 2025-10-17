@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mafia Among Us</title>
+  <link rel="stylesheet" href="../mafiaDecorate/game.css">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Background Video -->
+  <video autoplay muted loop class="bgVideo">
+    <source src="../public/video/fantasyc.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
+
+  <!-- Main Game Container -->
+  <div class="game-container">
+    <!-- Timer (kaya Among Us) -->
+    <div id="gameTimer" class="timer">--:--</div>
+
+    <!-- Phase Label -->
+    <div id="phaseLabel" class="phase-label">Menunggu Role...</div>
+
+    <!-- Animasi Siklus Waktu -->
+    <div id="skyArea" class="sky-area">
+      <div id="sunMoon" class="sun-moon"></div>
+      <div id="skyOverlay" class="sky-overlay day"></div>
+    </div>
+
+    <!-- Role Reveal Card -->
+    <div id="roleCard" class="role-card hidden">
+      <h2>KAMU ADALAH</h2>
+      <div id="roleBadge" class="role-badge">VILLAGER</div>
+      <p id="roleDesc" class="role-desc">Deskripsi role.</p>
+      <button id="btnRoleOk" class="btn">Siap</button>
+    </div>
+
+    <!-- Voting Card -->
+    <div id="votingCard" class="voting-card hidden">
+      <h2>ELIMINASI PEMAIN</h2>
+      <p>Pilih siapa yang akan dieksekusi:</p>
+      <div id="voteList" class="vote-list"></div>
+      <div class="vote-controls">
+        <button id="btnSkipVote" class="btn ghost">Skip</button>
+        <button id="btnSubmitVote" class="btn">Kirim Vote</button>
+      </div>
+    </div>
+
+    <!-- Action Card (Role Aksi Malam) -->
+    <div id="actionCard" class="action-card hidden">
+      <h2 id="actionTitle">AKSI MALAM</h2>
+      <p id="actionDesc">Pilih target aksi kamu:</p>
+      <div id="targetList" class="target-list"></div>
+      <button id="btnSubmitAction" class="btn">Kirim Aksi</button>
+    </div>
+
+    <!-- Chat Button (muncul waktu nunggu animasi) -->
+    <button id="btnOpenChat" class="btn chat-btn hidden">💬</button>
+
+    <!-- Chatbox -->
+    <div id="chatBox" class="chat-box hidden">
+      <div id="chatLog" class="chat-log"></div>
+      <div class="chat-input-wrap">
+        <input id="chatInput" placeholder="Ketik pesan...">
+        <button id="btnSend" class="btn">Kirim</button>
+      </div>
+    </div>
+
+    <!-- Victory/Lose Card -->
+    <div id="resultCard" class="result-card hidden">
+      <h2 id="resultText">VICTORY!</h2>
+      <p id="resultDesc">Kamu menang!</p>
+      <div class="result-controls">
+        <button id="btnHome" class="btn">Kembali ke Home</button>
+        <button id="btnReplay" class="btn">Main Lagi</button>
+      </div>
+    </div>
+
+    <!-- Notification Card -->
+    <div id="notifCard" class="notif-card hidden">Notifikasi</div>
+  </div>
+
+  <!-- Audio Elements -->
+  <audio id="clickSound"><source src="../public/sound/button.mp3" type="audio/mpeg"></audio>
+  <audio id="roleSound"><source src="../public/sound/role-reveal.mp3" type="audio/mpeg"></audio>
+  <audio id="timerSound"><source src="../public/sound/timer-tick.mp3" type="audio/mpeg"></audio>
+  <audio id="nightSound"><source src="../public/sound/night-start.mp3" type="audio/mpeg"></audio>
+  <audio id="daySound"><source src="../public/sound/day-start.mp3" type="audio/mpeg"></audio>
+  <audio id="votingSound"><source src="../public/sound/voting-start.mp3" type="audio/mpeg"></audio>
+  <audio id="eliminateSound"><source src="../public/sound/eliminated.mp3" type="audio/mpeg"></audio>
+  <audio id="victorySound"><source src="../public/sound/victory.mp3" type="audio/mpeg"></audio>
+  <audio id="defeatSound"><source src="../public/sound/defeat.mp3" type="audio/mpeg"></audio>
+
+  <!-- Socket.IO -->
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+  <script src="../mafiaInteract/game.js"></script>
+</body>
+</html>

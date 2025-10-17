@@ -1,0 +1,265 @@
+:root {
+  --accent: #ff4d6d;
+  --cyan: #00eaff;
+  --dark: #020203;
+  --card-bg: rgba(10, 10, 12, 0.85);
+  --text: #eee;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  color: var(--text);
+  background: var(--dark);
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  animation: fadein 0.3s ease;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.bgVideo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -3;
+  filter: brightness(30%) contrast(110%) saturate(120%);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.3));
+  z-index: -2;
+}
+
+.game-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--cyan);
+  z-index: 10;
+  text-shadow: 0 0 10px rgba(0, 234, 255, 0.5);
+}
+
+.phase-label {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffd;
+  z-index: 10;
+}
+
+.sky-area {
+  position: relative;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sun-moon {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff59d, #ffd54f, #ffb74d);
+  box-shadow: 0 8px 40px rgba(255,180,60,0.4);
+  transition: all 1s linear;
+  z-index: 5;
+}
+
+.sky-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: background 1s linear;
+}
+
+.sky-overlay.day {
+  background: linear-gradient(180deg, #dff7ff, #aee9ff);
+}
+
+.sky-overlay.sunset {
+  background: linear-gradient(180deg, rgba(255,140,0,0.12), rgba(10,10,30,0.2));
+}
+
+.sky-overlay.night {
+  background: linear-gradient(180deg, rgba(2,6,23,0.8), rgba(0,0,10,0.95));
+}
+
+.role-card, .voting-card, .action-card, .result-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  z-index: 60;
+  text-align: center;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.role-badge {
+  font-size: 28px;
+  font-weight: 900;
+  color: #111;
+  background: linear-gradient(90deg, #ffd, #ff6b6b);
+  padding: 12px;
+  border-radius: 10px;
+  margin: 12px 0;
+  display: inline-block;
+}
+
+.vote-list, .target-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.vote-list button, .target-list button {
+  padding: 8px;
+  text-align: left;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.vote-list button.selected, .target-list button.selected {
+  box-shadow: 0 0 12px rgba(0,255,255,0.2);
+  transform: scale(1.03);
+}
+
+.vote-controls, .result-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, var(--cyan), #0077ff);
+  color: #001;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.06);
+  color: #fff;
+}
+
+.chat-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-box {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  height: 300px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-log {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.2);
+}
+
+.chat-input-wrap {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+}
+
+.chat-input-wrap input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.3);
+  color: white;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.notif-card {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card-bg);
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  z-index: 80;
+  color: #ffd;
+  font-weight: bold;
+  text-align: center;
+}
