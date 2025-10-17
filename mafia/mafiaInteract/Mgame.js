@@ -1,6 +1,6 @@
 // Mgame.js - Updated untuk konek ke backend (sync dengan server.js)
 
-const SOCKET_URL = "https://backend-production-09796.up.railway.app"; // Ganti ke URL server kamu
+const SOCKET_URL = "http://localhost:3000"; // Ganti ke URL server kamu
 const socket = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
 
 /* elements */
@@ -199,9 +199,15 @@ function showRoleModal(role){
   roleModal.classList.remove('hidden');
   playClick();
 
+  // Hapus event listener lama (jika ada) untuk mencegah duplikasi
+  btnRoleOk.onclick = null;
+  // Tambahkan event listener baru
   btnRoleOk.onclick = () => {
     playClick();
     roleModal.classList.add('hidden');
+    // Di sini kamu bisa kirim event ke server bahwa player siap
+    // Misalnya: socket.emit("playerReady", { room, username });
+    // Atau lanjut ke fase berikutnya jika semua player siap (diatur server)
   };
 }
 
