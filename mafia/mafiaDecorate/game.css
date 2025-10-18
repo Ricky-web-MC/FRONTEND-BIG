@@ -20,12 +20,6 @@ body {
   height: 100vh;
   overflow: hidden;
   position: relative;
-  animation: fadein 0.3s ease;
-}
-
-@keyframes fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .bgVideo {
@@ -55,21 +49,9 @@ body {
   justify-content: center;
 }
 
-.timer {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--cyan);
-  z-index: 10;
-  text-shadow: 0 0 10px rgba(0, 234, 255, 0.5);
-}
-
 .phase-label {
   position: absolute;
-  top: 70px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 18px;
@@ -78,46 +60,7 @@ body {
   z-index: 10;
 }
 
-.sky-area {
-  position: relative;
-  width: 100%;
-  height: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.sun-moon {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff59d, #ffd54f, #ffb74d);
-  box-shadow: 0 8px 40px rgba(255,180,60,0.4);
-  transition: all 1s linear;
-  z-index: 5;
-}
-
-.sky-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  transition: background 1s linear;
-}
-
-.sky-overlay.day {
-  background: linear-gradient(180deg, #dff7ff, #aee9ff);
-}
-
-.sky-overlay.sunset {
-  background: linear-gradient(180deg, rgba(255,140,0,0.12), rgba(10,10,30,0.2));
-}
-
-.sky-overlay.night {
-  background: linear-gradient(180deg, rgba(2,6,23,0.8), rgba(0,0,10,0.95));
-}
-
-.role-card, .voting-card, .action-card, .result-card {
+.event-card {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -143,7 +86,7 @@ body {
   display: inline-block;
 }
 
-.vote-list, .target-list {
+.action-list, .vote-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -152,7 +95,7 @@ body {
   overflow-y: auto;
 }
 
-.vote-list button, .target-list button {
+.vote-list button {
   padding: 8px;
   text-align: left;
   background: rgba(255,255,255,0.05);
@@ -162,12 +105,12 @@ body {
   cursor: pointer;
 }
 
-.vote-list button.selected, .target-list button.selected {
+.vote-list button.selected {
   box-shadow: 0 0 12px rgba(0,255,255,0.2);
   transform: scale(1.03);
 }
 
-.vote-controls, .result-controls {
+.event-controls {
   display: flex;
   gap: 12px;
   justify-content: center;
@@ -209,31 +152,68 @@ body {
   justify-content: center;
 }
 
+
+/* Definisi chat-box yang baru - Di tengah */
 .chat-box {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 300px;
-  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
   background: var(--card-bg);
   border-radius: 12px;
   box-shadow: var(--shadow);
   z-index: 80;
   display: flex;
   flex-direction: column;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.chat-box.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chat-header {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px 12px 0 0;
+}
+
+.chat-header h4 {
+  margin: 0;
+  font-size: 14px;
+  color: var(--cyan);
 }
 
 .chat-log {
   flex: 1;
   padding: 10px;
   overflow-y: auto;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chat-log div {
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.05);
+  font-size: 14px;
+  word-wrap: break-word;
+  max-width: 80%;
 }
 
 .chat-input-wrap {
   display: flex;
   gap: 8px;
   padding: 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 0 0 12px 12px;
 }
 
 .chat-input-wrap input {
@@ -243,6 +223,39 @@ body {
   border: 1px solid rgba(255,255,255,0.1);
   background: rgba(0,0,0,0.3);
   color: white;
+  font-size: 14px;
+}
+
+.chat-input-wrap input:focus {
+  outline: none;
+  border-color: var(--cyan);
+}
+
+.chat-input-wrap .btn {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.result-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  z-index: 60;
+  text-align: center;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.result-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
 }
 
 .hidden {
