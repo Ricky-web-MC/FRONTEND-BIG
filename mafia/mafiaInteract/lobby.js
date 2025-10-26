@@ -1,5 +1,5 @@
 //================================ LOBBY JS =======================================
-const SOCKET_URL = "https://backend-production-09796.up.railway.app";
+const SOCKET_URL = "https://backend-production-c187.up.railway.app";
 const socket = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
 
 const myNameEl = document.getElementById('myName');

@@ -7,7 +7,7 @@ if (login) {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    const res = await fetch("https://backend-production-c187.up.railway.app/", {
+    const res = await fetch("https://backend-production-c187.up.railway.app/login", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -36,7 +36,7 @@ if (registerForm) {
     const phone = document.getElementById("phone").value;
     const password = document.getElementById("password").value;
 
-    const res = await fetch("https://backend-production-09796.up.railway.app/register", {
+    const res = await fetch("https://backend-production-c187.up.railway.app/register", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ username, phone, password }),
