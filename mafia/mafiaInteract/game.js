@@ -1,6 +1,6 @@
-// game.js - Mafia Among Us Style Game (Event Card & Chat Only)
+// game.js - Mafia Among Us Style Game (Event Card & Chat Only - Updated)
 // Koneksi ke server Socket.IO
-const SOCKET_URL = "https://backend-production-09796.up.railway.app";
+const SOCKET_URL = "https://backend-production-09796.up.railway.app"; // Hapus spasi
 const socket = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
 
 /* ==================== AMBIL ELEMEN HTML ==================== */
@@ -32,6 +32,9 @@ const btnReplay = document.getElementById('btnReplay'); // Tombol main lagi
 
 const notifCard = document.getElementById('notifCard'); // Notifikasi kecil di atas layar
 
+// Tambahin elemen notifikasi titik
+const chatNotification = document.getElementById('chatNotification');
+
 /* ==================== STATE VARIABEL ==================== */
 // Variabel untuk menyimpan data sementara
 let players = []; // Daftar semua player di room
@@ -60,17 +63,24 @@ function showNotif(text, duration = 2500) {
   setTimeout(() => hide(notifCard), duration);
 }
 
-// Fungsi untuk menambahkan pesan ke chat log
-function appendChat(from, msg) {
+// Fungsi untuk menambahkan pesan ke chat log (dari lobby style)
+function appendChat(from, text) {
   const div = document.createElement('div');
-  // Gaya pesan kayak di lobby (dengan nama pengirim)
-  div.innerHTML = `<b>${escapeHtml(from)}:</b> ${escapeHtml(msg)}`;
-  // Jika pesan dari kamu, rata kanan
-  div.style.alignSelf = from === meUsername ? 'flex-end' : 'flex-start';
-  div.style.maxWidth = '80%';
+  div.style.marginBottom = '8px'; // Jarak antar pesan
+  div.innerHTML = `<b>${escapeHtml(from)}:</b> ${escapeHtml(text)}`;
   chatLog.appendChild(div);
   // Auto-scroll ke pesan terbaru
   chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+// Fungsi untuk menampilkan notifikasi titik
+function showChatNotification() {
+  show(chatNotification);
+}
+
+// Fungsi untuk menyembunyikan notifikasi titik
+function hideChatNotification() {
+  hide(chatNotification);
 }
 
 // Fungsi untuk membuat list pemain (untuk voting atau aksi role)
@@ -122,7 +132,7 @@ function showEventCard(title, content, showOk = true, showSubmit = false, showSk
 
 // Ketika koneksi ke server berhasil
 socket.on('connect', () => {
-  console.log('Connected to server.');
+  console.log('✅ Connected to server.');
   // Simpan socket ID kamu
   meId = socket.id;
   // Kirim permintaan join ke game room ke server
@@ -166,12 +176,13 @@ socket.on('nightStart', (data) => {
 // Server mulai fase siang (diskusi & voting)
 socket.on('dayStart', (data) => {
   phaseLabel.textContent = 'Diskusi';
-  show(chatBox); // Tampilkan chatbox untuk diskusi
+  // Tampilkan chatbox untuk diskusi (bisa diatur sesuai kebutuhan)
+  // show(chatBox); // Misalnya, munculkan otomatis saat dayStart
 
   // Setelah 2 menit, ganti ke voting
   setTimeout(() => {
     phaseLabel.textContent = 'Voting';
-    hide(chatBox); // Sembunyikan chatbox
+    // hide(chatBox); // Sembunyikan chatbox
     // Buat isi card untuk voting
     const content = `
       <p>Pilih siapa yang akan dieksekusi:</p>
@@ -256,9 +267,11 @@ btnSkipVote.onclick = () => {
 // Tombol buka/sembunyikan chatbox
 btnOpenChat.onclick = () => {
   chatBox.classList.toggle('hidden'); // Toggle tampil/sembunyi
+  // Sembunyikan notifikasi titik saat chatbox dibuka
+  hideChatNotification();
 };
 
-/// Tombol kirim pesan chat
+// Tombol kirim pesan chat
 btnSend.onclick = () => {
   const msg = chatInput.value.trim(); // Ambil pesan
   if (!msg) return; // Jika kosong, gak dikirim
@@ -293,6 +306,8 @@ socket.on('chatMessage', ({ username, msg }) => {
   // Jangan append ulang jika pesan ini dari kamu, karena kamu udah append sebelum kirim ke server
   if (username !== meUsername) {
     appendChat(username, msg);
+    // Tampilkan notifikasi titik karena pesan masuk dari player lain
+    showChatNotification();
   }
 });
 

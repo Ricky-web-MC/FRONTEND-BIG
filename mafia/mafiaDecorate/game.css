@@ -1,25 +1,23 @@
 :root {
-  --accent: #ff4d6d;
-  --cyan: #00eaff;
-  --dark: #020203;
-  --card-bg: rgba(10, 10, 12, 0.85);
-  --text: #eee;
-  --shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --card-bg: rgba(10,10,12,0.85);
+  --accent: #00eaff;
 }
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-}
-
+* { box-sizing: border-box; }
 body {
-  color: var(--text);
-  background: var(--dark);
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #040406;
+  font-family: Inter, system-ui, Arial;
+  color: #eee;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .bgVideo {
@@ -29,250 +27,191 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: -3;
-  filter: brightness(30%) contrast(110%) saturate(120%);
+  filter: brightness(40%);
 }
-
 .overlay {
   position: fixed;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.3));
+  background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.35));
   z-index: -2;
 }
-
-.game-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
+.card {
+  width: 94%;
+  max-width: 980px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+}
+.top-user {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.pp {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 3px solid cyan;
+  box-shadow: 0 0 10px white;
+  object-fit: cover;
+}
+.me { 
+  color: yellow;
+  font-size: 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin: 10px 0;
+  text-shadow: 0 0 8px cyan;
+}
+
+.meta { font-size: 13px; opacity: 0.9; }
+
+/* Update: Tambahin style untuk tombol toggle chat */
+.toggle-chat-btn {
+  width: 100%;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #00a7ff, #00eaff);
+  color: #001;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 }
 
-.phase-label {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 18px;
-  font-weight: bold;
-  color: #ffd;
-  z-index: 10;
+.toggle-chat-btn:hover {
+  box-shadow: 0 0 10px cyan, 0 0 20px cyan;
+  transform: scale(1.02);
+  background: linear-gradient(135deg, #00eaff, #00a7ff);
 }
 
-.event-card {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--card-bg);
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  z-index: 60;
-  text-align: center;
-  min-width: 300px;
-  max-width: 500px;
-}
-
-.role-badge {
-  font-size: 28px;
-  font-weight: 900;
-  color: #111;
-  background: linear-gradient(90deg, #ffd, #ff6b6b);
-  padding: 12px;
-  border-radius: 10px;
-  margin: 12px 0;
-  display: inline-block;
-}
-
-.action-list, .vote-list {
+/* Update: Chat area sekarang bisa hidden */
+.chat-area {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 16px 0;
-  max-height: 200px;
-  overflow-y: auto;
+  height: 520px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding: 12px;
+  /* Tambahin transition opacity */
+  opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
-.vote-list button {
-  padding: 8px;
-  text-align: left;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 6px;
-  color: #fff;
-  cursor: pointer;
+.chat-area.hidden {
+  opacity: 0;
+  pointer-events: none;
+  display: none; /* Atau tetap flex, tapi opacity 0 dan pointer-events none */
 }
 
-.vote-list button.selected {
-  box-shadow: 0 0 12px rgba(0,255,255,0.2);
-  transform: scale(1.03);
-}
-
-.event-controls {
+.chat-log { flex: 1; overflow: auto; padding-right: 6px; }
+.chat-input {
   display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 16px;
+  gap: 8px;
+  margin-top: 10px;
 }
-
-.btn {
-  padding: 10px 16px;
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.04);
+  background: transparent;
+  color: #fff;
+}
+.chat-input button {
+  padding: 10px 14px;
   border-radius: 10px;
   border: none;
-  background: linear-gradient(135deg, var(--cyan), #0077ff);
+  background: linear-gradient(135deg, #00eaff,#0077ff);
+  font-weight: 700;
   color: #001;
-  font-weight: bold;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.players-card {
+  background: rgba(0,0,0,0.35);
+  padding: 12px;
+  border-radius: 10px;
+  height: calc(100% - 120px);
+  overflow: auto;
+}
+.player-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  background: rgba(255,255,255,0.02);
+}
+.player-item.dead { opacity: 0.5; }
+
+.btn {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg,#00eaff,#00a7ff);
+  color: #001;
+  font-weight: 700;
   cursor: pointer;
-  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  box-shadow: 0 0 5px cyan, 0 0 10px cyan;
+  transform: scale(1.05);
+  background: cyan;
+  color: #fc0a0a; 
 }
 
 .btn.ghost {
   background: transparent;
   border: 2px solid rgba(255,255,255,0.06);
-  color: #fff;
+  color: #fc0a0a;
+  transition: all 0.3s ease;
 }
 
-.chat-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: white;
-  font-size: 24px;
-  border: none;
-  cursor: pointer;
-  z-index: 70;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.btn.ghost:hover {
+  box-shadow: 0 0 10px cyan, 0 0 20px cyan;
+  transform: scale(1.08);
+  background: #001;
+  color: #fc0a0a;
 }
 
+/* HAPUS .overlay-count */
 
-/* Definisi chat-box yang baru - Di tengah */
-.chat-box {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
-  background: var(--card-bg);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  z-index: 80;
-  display: flex;
-  flex-direction: column;
-  opacity: 1;
-  transition: opacity 0.3s ease;
+@media(max-width:880px){
+  .card{grid-template-columns:1fr}
+  .side{order:2}
+  .chat-area{order:1;height:60vh}
 }
 
-.chat-box.hidden {
-  opacity: 0;
-  pointer-events: none;
+.page-fade-out {
+  animation: fadeOut 0.5s ease forwards;
 }
 
-.chat-header {
-  padding: 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  background: rgba(0,0,0,0.2);
-  border-radius: 12px 12px 0 0;
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
-.chat-header h4 {
-  margin: 0;
-  font-size: 14px;
-  color: var(--cyan);
-}
-
-.chat-log {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  background: rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.chat-log div {
-  padding: 6px 8px;
-  border-radius: 6px;
-  background: rgba(255,255,255,0.05);
-  font-size: 14px;
-  word-wrap: break-word;
-  max-width: 80%;
-}
-
-.chat-input-wrap {
-  display: flex;
-  gap: 8px;
-  padding: 10px;
-  background: rgba(0,0,0,0.2);
-  border-radius: 0 0 12px 12px;
-}
-
-.chat-input-wrap input {
-  flex: 1;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(0,0,0,0.3);
-  color: white;
-  font-size: 14px;
-}
-
-.chat-input-wrap input:focus {
-  outline: none;
-  border-color: var(--cyan);
-}
-
-.chat-input-wrap .btn {
-  padding: 8px 12px;
-  font-size: 14px;
-}
-
-.result-card {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--card-bg);
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  z-index: 60;
-  text-align: center;
-  min-width: 300px;
-  max-width: 500px;
-}
-
-.result-controls {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 16px;
-}
-
+/* Tambahin class hidden */
 .hidden {
   display: none !important;
-}
-
-.notif-card {
-  position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--card-bg);
-  padding: 12px 18px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  z-index: 80;
-  color: #ffd;
-  font-weight: bold;
-  text-align: center;
 }

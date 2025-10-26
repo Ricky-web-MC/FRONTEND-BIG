@@ -1,75 +1,57 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mafia Among Us</title>
-  <link rel="stylesheet" href="../mafiaDecorate/game.css">
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MAFIA - Lobby (Multiplayer)</title>
+  <link rel="stylesheet" href="../mafiaDecorate/lobby.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <!-- Background Video -->
   <video autoplay muted loop class="bgVideo">
     <source src="../public/video/fantasyc.mp4" type="video/mp4">
   </video>
   <div class="overlay"></div>
 
-  <!-- Main Game Container -->
-  <div class="game-container">
-    <!-- Phase Label -->
-    <div id="phaseLabel" class="phase-label">Menunggu Role...</div>
-
-    <!-- Event Card (Role, Aksi, Voting, dll) -->
-    <div id="eventCard" class="event-card hidden">
-      <h2 id="eventTitle">KAMU ADALAH</h2>
-      <div id="eventContent" class="event-content">
-        <div id="roleBadge" class="role-badge">VILLAGER</div>
-        <p id="roleDesc" class="role-desc">Deskripsi role.</p>
-        <div id="actionList" class="action-list"></div>
-        <div id="voteList" class="vote-list"></div>
+  <div class="card" id="card">
+    <div>
+      <div class="top-user">
+        <img id="myPP" class="pp" src="../public/img/profile.jpg" alt="pp">
+        <div>
+          <div class="me" id="myName">Guest</div>
+          <div class="meta">
+            <span id="roomId"></span>
+            <span id="playersCount"></span>/<span id="playersMax"></span>
+          </div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button id="btnBackHome" class="btn ghost"><i class="fa-solid fa-door-open"></i> Keluar lobby</button>
+        </div>
       </div>
-      <div id="eventControls" class="event-controls">
-        <button id="btnEventOk" class="btn">Siap</button>
-        <button id="btnSkipVote" class="btn ghost hidden">Skip</button>
-        <button id="btnSubmitVote" class="btn hidden">Kirim Vote</button>
-      </div>
-    </div>
 
-    <!-- Chat Button -->
-    <button id="btnOpenChat" class="btn chat-btn">💬</button>
+      <!-- Tombol untuk membuka chat -->
+      <button id="btnToggleChat" class="btn toggle-chat-btn">
+        <i class="fa-solid fa-comment"></i> Buka Obrolan
+      </button>
 
-      <!-- ... bagian lain tetap ... -->
-
-  <!-- Chatbox (Update - Style dari lobby) -->
-  <div id="chatBox" class="chat-box hidden">
-    <div class="chat-header">
-      <h4>Obrolan Pemain</h4>
-    </div>
-    <div id="chatLog" class="chat-log"></div>
-    <div class="chat-input-wrap">
-      <input id="chatInput" placeholder="Ketik pesan...">
-      <button id="btnSend" class="btn">Kirim</button>
-    </div>
-  </div>
-
-  <!-- ... bagian lain tetap ... -->
-
-    <!-- Victory/Lose Card -->
-    <div id="resultCard" class="result-card hidden">
-      <h2 id="resultText">VICTORY!</h2>
-      <p id="resultDesc">Kamu menang!</p>
-      <div class="result-controls">
-        <button id="btnHome" class="btn">Kembali ke Home</button>
-        <button id="btnReplay" class="btn">Main Lagi</button>
+      <!-- Area Chat (default hidden) -->
+      <div id="chatArea" class="chat-area hidden">
+        <div id="chatLog" class="chat-log"></div>
+        <div class="chat-input">
+          <input id="chatInput" placeholder="Ketik pesan..." autocomplete="off">
+          <button id="btnSend" class="btn">Kirim</button>
+        </div>
       </div>
     </div>
 
-    <!-- Notification Card -->
-    <div id="notifCard" class="notif-card hidden">Notifikasi</div>
-  </div>
 
-  <!-- Socket.IO -->
+  <!-- HAPUS countOverlay -->
+
+  <audio id="clickSound">
+    <source src="../public/sound/button.mp3" type="audio/mpeg">
+  </audio>
+
   <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-  <script src="../mafiaInteract/game.js"></script>
+  <script src="../mafiaInteract/lobby.js"></script>
 </body>
 </html>
