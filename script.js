@@ -69,5 +69,3 @@ if (registerForm) {
     }
   });
 }
-
-console.log(localStorage);
