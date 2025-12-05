@@ -6,7 +6,9 @@ if (login) {
     e.preventDefault();
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    const notif = document.getElementById("peringatan");
+
+    const popupError = document.getElementById("popupError");
+    const popupSuccess = document.getElementById("popupSuccess");
 
     const res = await fetch("https://backend-production-c187.up.railway.app/login", {
       method: "POST",
@@ -16,13 +18,29 @@ if (login) {
 
     const data = await res.json();
     
+    // ================= SUCCESS ==================
     if (data.success) {
-      notif.textContent = `password anda benar, silahkan bersenang senang ^^`
-      window.location.href = "./mafia/mafiaUI/home.html";
-      
-    } else {
-      notif.textContent = `password anda salah, gunakan password anda dengan benar`;
+        popupSuccess.classList.add("show");
+
+        setTimeout(() => {
+            popupSuccess.classList.remove("show");
+            window.location.href = "./mafia/mafiaUI/home.html";
+        }, 2500);
+
+        return;
     }
+
+    // ================= ERROR ===================
+    popupError.classList.add("show");
+
+    setTimeout(() => {
+        popupError.classList.remove("show");
+
+        // reset input
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+    }, 2500);
+
   });
 }
 
@@ -51,3 +69,5 @@ if (registerForm) {
     }
   });
 }
+
+console.log(localStorage);

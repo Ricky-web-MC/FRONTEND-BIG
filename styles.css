@@ -344,12 +344,91 @@ p {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.notif{
-    text-align: center;
-    margin-top: 20px;
-    color: rgba(0, 212, 255, 0.7);
-    font-size: 13px;
+/* ========================================================= */
+/* POPUP LOGIN FAILED - BRE TAMBAHAN */
+/* ========================================================= */
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* hitam transparan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; 
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s ease-in-out;
+    backdrop-filter: blur(3px);
 }
-.notif .show{
+
+.popup-overlay.show {
     opacity: 1;
+    pointer-events: all;
+}
+
+.popup-box {
+    background: rgba(0, 0, 0, 0.85);
+    padding: 25px;
+    width: 280px;
+    border-radius: 15px;
+    border: 1px solid #00d4ff;
+    box-shadow: 0 0 20px #00d4ffaa; /* Glow biru */
+    text-align: center;
+    animation: popupAnim 0.4s ease;
+}
+
+@keyframes popupAnim {
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.popup-box h3 {
+    color: #00d4ff;
+    margin-bottom: 10px;
+    font-family: 'Cinzel';
+}
+
+.popup-box p {
+    color: rgba(0, 212, 255, 0.8);
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* Loading Ring */
+.loading-ring {
+    width: 35px;
+    height: 35px;
+    border: 4px solid rgba(0, 212, 255, 0.3);
+    border-top-color: #00d4ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+#popupSuccess .popup-box {
+    border-color: #00ff99;
+    box-shadow: 0 0 20px #00ff99aa;
+}
+
+#popupSuccess .popup-box h3 {
+    color: #00ff99;
+}
+
+#popupSuccess .loading-ring {
+    border: 4px solid rgba(0, 255, 153, 0.3);
+    border-top-color: #00ff99;
 }

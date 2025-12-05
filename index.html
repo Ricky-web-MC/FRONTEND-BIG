@@ -28,9 +28,6 @@
                     <label for="password">Password</label>
                     <div class="glow-line"></div>
                 </div>
-                <div class="notif" id="peringatan">
-
-                </div>
 
                 <div class="signup-link">
                     Lupa password nya? Silahkan<a href="https://wa.me/6282339961745">>HUBUNGI<</a> WA ADMIN 
@@ -51,8 +48,27 @@
             </form>
         </div>
     </div>
-    
 
+
+    <!-- POPUP LOGIN FAILED -->
+    <div id="popupError" class="popup-overlay">
+        <div class="popup-box">
+            <h3>Login Gagal</h3>
+            <p>Username atau password anda salah!</p>
+
+            <!-- Animasi loading -->
+            <div class="loading-ring"></div>
+        </div>
+    </div>
+    
+    <!-- POPUP LOGIN SUCCESS -->
+    <div id="popupSuccess" class="popup-overlay">
+        <div class="popup-box">
+            <h3>Login Berhasil</h3>
+            <p>Selamat datang kembali ^^</p>
+            <div class="loading-ring"></div>
+        </div>
+    </div>
 
 
 
