@@ -10,35 +10,46 @@ if (login) {
     const popupError = document.getElementById("popupError");
     const popupSuccess = document.getElementById("popupSuccess");
 
-    const res = await fetch("https://backend-production-c187.up.railway.app/login", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+    let data;
 
-    const data = await res.json();
-    
-    // ================= SUCCESS ==================
-    if (data.success) {
-        popupSuccess.classList.add("show");
+    try {
+      const res = await fetch("https://backend-production-c187.up.railway.app/login", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
-        setTimeout(() => {
-            popupSuccess.classList.remove("show");
-            window.location.href = "./mafia/mafiaUI/home.html";
-        }, 2500);
+      // Kalau backend balas HTML/error → langsung masuk catch
+      data = await res.json();
+    } catch (err) {
+      console.error("Response bukan JSON:", err);
 
-        return;
+      // Tampilkan popup error
+      popupError.classList.add("show");
+      setTimeout(() => popupError.classList.remove("show"), 2500);
+      return;
     }
 
-    // ================= ERROR ===================
+    // ============ SUCCESS ============
+    if (data.success) {
+      popupSuccess.classList.add("show");
+
+      setTimeout(() => {
+        popupSuccess.classList.remove("show");
+        window.location.href = "./mafia/mafiaUI/home.html";
+      }, 2500);
+
+      return;
+    }
+
+    // =========== ERROR (username/pw salah) ============
     popupError.classList.add("show");
 
     setTimeout(() => {
-        popupError.classList.remove("show");
+      popupError.classList.remove("show");
 
-        // reset input
-        document.getElementById("username").value = "";
-        document.getElementById("password").value = "";
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
     }, 2500);
 
   });
@@ -55,13 +66,21 @@ if (registerForm) {
     const phone = document.getElementById("phone").value;
     const password = document.getElementById("password").value;
 
-    const res = await fetch("https://backend-production-c187.up.railway.app/register", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ username, phone, password }),
-    });
+    let data;
 
-    const data = await res.json();
+    try {
+      const res = await fetch("https://backend-production-c187.up.railway.app/register", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ username, phone, password }),
+      });
+
+      data = await res.json();
+    } catch (err) {
+      alert("Server error / tidak merespon");
+      return;
+    }
+
     alert(data.message);
 
     if (data.success) {
