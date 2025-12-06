@@ -7,8 +7,8 @@ if (login) {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    const popupError = document.getElementById("popupError");
     const popupSuccess = document.getElementById("popupSuccess");
+    const popupError = document.getElementById("popupError");
 
     let data;
 
@@ -66,6 +66,8 @@ if (registerForm) {
     const phone = document.getElementById("phone").value;
     const password = document.getElementById("password").value;
 
+    const popupSuccess = document.getElementById("popupSuccessReg");
+
     let data;
 
     try {
@@ -74,17 +76,29 @@ if (registerForm) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ username, phone, password }),
       });
-
+     
+      // Kalau backend balas HTML/error → langsung masuk catch
       data = await res.json();
     } catch (err) {
-      alert("Server error / tidak merespon");
+      console.error("Response bukan JSON:", err);
+
+      // Tampilkan popup error
+      popupError.classList.add("show");
+      setTimeout(() => popupError.classList.remove("show"), 2500);
       return;
     }
 
-    alert(data.message);
-
+    // ============ SUCCESS ============
     if (data.success) {
-      window.location.href = "index.html";
+      popupSuccess.classList.add("show");
+
+      setTimeout(() => {
+        popupSuccess.classList.remove("show");
+        window.location.href = "index.html";
+      }, 2500);
+
+      return;
     }
+    
   });
 }
