@@ -58,18 +58,27 @@ if (login) {
 
 
 // =========================== REGISTER ========================== //
-
 const registerForm = document.getElementById("registerForm");
 if (registerForm) {
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById("username").value;
-    const phone = document.getElementById("phone").value;
+    const username = document.getElementById("username").value.trim();
+    const phone = document.getElementById("phone").value.trim();
     const password = document.getElementById("password").value;
 
-    let data;
+    const popupSuccessReg = document.getElementById("popupSuccessReg");
+    const popupErrorReg = document.getElementById("popupErrorReg");
 
+    // basic validation (optional)
+    if (!username || !phone || !password) {
+      popupErrorReg.querySelector("p").textContent = "Lengkapi semua field terlebih dahulu.";
+      popupErrorReg.classList.add("show");
+      setTimeout(() => popupErrorReg.classList.remove("show"), 2500);
+      return;
+    }
+
+    let data;
     try {
       const res = await fetch("https://backend-production-c187.up.railway.app/register", {
         method: "POST",
@@ -77,16 +86,31 @@ if (registerForm) {
         body: JSON.stringify({ username, phone, password }),
       });
 
+      // kalau server balik HTML atau failure status, handle
+      // (res.ok false tetap bisa berisi json, tapi safer: try parse)
       data = await res.json();
     } catch (err) {
-      alert("Server error / tidak merespon");
+      console.error("Register response bukan JSON / gagal:", err);
+      popupErrorReg.querySelector("p").textContent = "Koneksi bermasalah. Coba lagi.";
+      popupErrorReg.classList.add("show");
+      setTimeout(() => popupErrorReg.classList.remove("show"), 2500);
       return;
     }
 
-    alert(data.message);
-
-    if (data.success) {
-      window.location.href = "index.html";
+    if (data && data.success) {
+      popupSuccessReg.classList.add("show");
+      setTimeout(() => {
+        popupSuccessReg.classList.remove("show");
+        // masuk ke halaman login atau index
+        window.location.href = "index.html";
+      }, 2000);
+      return;
+    } else {
+      // show message from server if ada
+      popupErrorReg.querySelector("p").textContent = data?.message || "Pendaftaran gagal.";
+      popupErrorReg.classList.add("show");
+      setTimeout(() => popupErrorReg.classList.remove("show"), 3000);
+      return;
     }
   });
 }

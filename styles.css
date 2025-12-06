@@ -432,3 +432,17 @@ p {
     border: 4px solid rgba(0, 255, 153, 0.3);
     border-top-color: #00ff99;
 }
+
+#popupSuccessReg .popup-box {
+    border-color: #00ff99;
+    box-shadow: 0 0 20px #00ff99aa;
+}
+
+#popupSuccessReg .popup-box h3 {
+    color: #00ff99;
+}
+
+#popupSuccessReg .loading-ring {
+    border: 4px solid rgba(0, 255, 153, 0.3);
+    border-top-color: #00ff99;
+}

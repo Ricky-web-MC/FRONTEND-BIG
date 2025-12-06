@@ -18,7 +18,7 @@
             <form id="registerForm">
                 <div class="input-group">
                     <input type="text" id="username" required class="input-field">
-                    <label for="username">NAMA LENGKAP</label>
+                    <label for="username">USERNAME</label>
                     <div class="glow-line"></div>
                 </div>
                 
@@ -41,12 +41,36 @@
                 </button>
                 
                 <div class="signup-link">
-                    daftar gagal? gunakan cara lain > <a href="index.html">LOGIN <</a> atau <a href="https://wa.me/6282339961745"> > HUBUNGI < </a> ADMIN
+                    daftar gagal? gunakan cara lain > <a href="index.html"> LOGIN </a> atau <a href="https://wa.me/6282339961745"> HUBUNGI </a> ADMIN
                 </div><br>
                 <p>admin nya orang baik dan tidak sombong, jadi chat aja ya 🗿</p>
             </form>
         </div>
     </div>
+
+
+        <!-- POPUP REGISTER SUCCESS -->
+    <div id="popupSuccessReg" class="popup-overlay">
+        <div class="popup-box">
+            <h3>Daftar Berhasil</h3>
+            <p>Akun berhasil dibuat. Silahkan login untuk mulai bermain.</p>
+            <div class="loading-ring"></div>
+        </div>
+    </div>
+
+    <!-- POPUP REGISTER ERROR -->
+    <div id="popupErrorReg" class="popup-overlay">
+        <div class="popup-box">
+            <h3>Daftar Gagal</h3>
+            <p>Terjadi masalah saat pendaftaran. Coba lagi nanti.</p>
+            <div class="loading-ring"></div>
+        </div>
+    </div>
+
+
+
+
+
     
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
