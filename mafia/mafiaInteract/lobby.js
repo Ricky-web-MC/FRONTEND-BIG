@@ -1,7 +1,10 @@
-//================================ LOBBY JS =======================================
+// ====================================== FIXED LOBBY.JS =========================================
+document.addEventListener("DOMContentLoaded", () => {
+
 const SOCKET_URL = "https://backend-production-c187.up.railway.app";
 const socket = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
 
+// ===== GET ALL ELEMENTS AFTER DOM READY (fix null errors) =====
 const myNameEl = document.getElementById('myName');
 const myPP = document.getElementById('myPP');
 const roomIdEl = document.getElementById('roomId');
@@ -18,6 +21,7 @@ const clickSound = document.getElementById('clickSound');
 const countOverlay = document.getElementById('countOverlay');
 const countNum = document.getElementById('countNum');
 
+// ===== GLOBAL STATE =====
 const username = localStorage.getItem('username') || 'Guest';
 const profileImage = localStorage.getItem('profileImage') || '../public/img/profile.jpg';
 let playersMax = parseInt(localStorage.getItem('playerCount') || '8', 10);
@@ -28,58 +32,91 @@ if(!room){
   localStorage.setItem('roomId', room);
 }
 
+// ===== RENDER INITIAL UI =====
 myNameEl.textContent = username;
 myPP.src = profileImage;
 roomIdEl.textContent = room;
 playersMaxEl.textContent = playersMax;
 
-// unlock click sound
+// ===== ENABLE CLICK SOUND =====
 window.addEventListener('click', function unlock(){
-  if(clickSound) clickSound.play().then(()=>{clickSound.pause();clickSound.currentTime=0}).catch(()=>{});
+  if(clickSound) clickSound.play().then(()=>{
+    clickSound.pause();
+    clickSound.currentTime = 0;
+  }).catch(()=>{});
   window.removeEventListener('click', unlock);
 });
-function playClick(){ if(clickSound){ clickSound.currentTime = 0; clickSound.play().catch(()=>{}); } }
+function playClick(){ 
+  if(clickSound){
+    clickSound.currentTime = 0;
+    clickSound.play().catch(()=>{});
+  } 
+}
 
-// connect & join
+// ===== SOCKET CONNECT =====
 socket.on('connect', () => {
   console.log('connected', socket.id);
   socket.emit('joinLobby', { username, room, maxPlayers: playersMax });
 });
 
-// render player list
+// ===== RECEIVE PLAYER LIST =====
 socket.on('playerList', (list) => {
+  if (!playersList) return; // prevent null
   renderPlayers(list || []);
   playersCountEl.textContent = (list || []).length;
-  // NOTE: countdown controlled by server via 'startCountdown' event
 });
 
-// room info update
+// ===== ROOM INFO =====
 socket.on('roomInfo', (info) => {
-  if (info && info.maxPlayers) {
+  if (info?.maxPlayers) {
     playersMax = info.maxPlayers;
     playersMaxEl.textContent = playersMax;
   }
-  if (info && info.room) {
+  if (info?.room) {
     room = info.room;
     roomIdEl.textContent = room;
   }
 });
 
-// di event listener startCountdown, ubah dikit:
+// ===== COUNTDOWN =====
+let countdownRunning = false;
+
 socket.on('startCountdown', (data) => {
-  const secs = (data && data.seconds) ? parseInt(data.seconds,10) : 10;
-  const serverStart = data.startTime ? data.startTime : Date.now();
+  const secs = parseInt(data?.seconds || 10, 10);
+  const serverStart = data?.startTime || Date.now();
   const diff = Math.floor((Date.now() - serverStart) / 1000);
   const adjusted = Math.max(0, secs - diff);
   startCountdown(adjusted);
 });
 
-// chat messages (server broadcast)
+function startCountdown(start){
+  if (countdownRunning) return;
+  countdownRunning = true;
+
+  countOverlay.style.display = "flex";
+  countNum.textContent = start;
+
+  let t = start;
+
+  const iv = setInterval(() => {
+    t--;
+    countNum.textContent = t;
+
+    if (t <= 0){
+      clearInterval(iv);
+      countOverlay.querySelector('.small').textContent = "GAME DIMULAI!!!";
+      setTimeout(() => {
+        window.location.href = "game.html";
+      }, 900);
+    }
+  }, 1000);
+}
+
+// ===== CHAT =====
 socket.on('chatMessage', ({username: from, msg}) => {
   appendChat(from, msg);
 });
 
-// send message (do NOT locally append; wait server broadcast to avoid duplicates)
 btnSend.addEventListener('click', () => {
   const msg = chatInput.value.trim();
   if(!msg) return;
@@ -88,24 +125,32 @@ btnSend.addEventListener('click', () => {
   chatInput.value = '';
 });
 
-// enter key
-chatInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') btnSend.click(); });
+chatInput.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') btnSend.click();
+});
 
+// ===== BUTTONS =====
 btnBackHome.addEventListener('click', () => {
   playClick();
   document.body.classList.add('page-fade-out');
-  setTimeout (() => {
+  setTimeout(() => {
     localStorage.removeItem('roomId');
-    window.location.href = 'home.html';
+    window.location.href = "home.html";
   }, 500);
 });
-btnViewPlayers.addEventListener('click', () => { playClick(); alert(playersList.innerText || 'Belum ada pemain'); });
-btnReady.addEventListener('click', () => {
+
+btnViewPlayers.addEventListener('click', () => {
   playClick();
-  socket.emit('chatMessage', { room, username, msg: 'Siap!' });
-  alert('Siap! Tunggu pemain lain...');
+  alert(playersList.innerText || "Belum ada pemain");
 });
 
+btnReady.addEventListener('click', () => {
+  playClick();
+  socket.emit('chatMessage', { room, username, msg: "Siap!" });
+  alert("Siap! Tunggu pemain lain…");
+});
+
+// ===== HELPERS =====
 function appendChat(from, text){
   const div = document.createElement('div');
   div.style.marginBottom = '8px';
@@ -115,40 +160,30 @@ function appendChat(from, text){
 }
 
 function renderPlayers(list){
-  playersList.innerHTML = '';
+  playersList.innerHTML = "";
   list.forEach(p => {
     const el = document.createElement('div');
-    el.className = 'player-item';
-    el.innerHTML = `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00eaff,#0077ff);display:inline-block;text-align:center;line-height:36px;font-weight:700;color:#001">${escapeHtml((p.username||'?').charAt(0).toUpperCase())}</div>
+    el.className = "player-item";
+    el.innerHTML = `
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00eaff,#0077ff);
+      display:inline-block;text-align:center;line-height:36px;font-weight:700;color:#001">
+        ${escapeHtml((p.username||'?').charAt(0).toUpperCase())}
+      </div>
       <div style="margin-left:8px">
         <div style="font-weight:700">${escapeHtml(p.username)}</div>
         <div style="font-size:12px;opacity:0.8">${p.id === socket.id ? 'You' : 'Player'}</div>
-      </div>`;
+      </div>
+    `;
     playersList.appendChild(el);
   });
 }
 
-// countdown overlay (same as before)
-let countdownRunning = false;
-function startCountdown(start){
-  if(countdownRunning) return;
-  countdownRunning = true;
-  countNum.textContent = start;
-  countOverlay.style.display = 'flex';
-  let t = start;
-  const iv = setInterval(()=>{
-    t--;
-    countNum.textContent = t;
-    if(t <= 0){
-      clearInterval(iv);
-      countOverlay.querySelector('.small').textContent = 'GAME DIMULAI!!!';
-      setTimeout(()=>{
-        window.location.href = 'game.html';
-      }, 900);
-    }
-  }, 1000);
+function escapeHtml(s){
+  return (s+'').replace(/[&<>"']/g, c => 
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])
+  );
 }
 
-function escapeHtml(s){ return (s+'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+socket.on('disconnect', () => console.log("socket disconnected"));
 
-socket.on('disconnect', ()=>{ console.log('socket disconnected'); });
+}); // END DOMContentLoaded WRAPPER
