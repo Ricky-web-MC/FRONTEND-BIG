@@ -50,7 +50,7 @@ if (login) {
 
       document.getElementById("username").value = "";
       document.getElementById("password").value = "";
-    }, 2500);
+    }, 3000);
 
   });
 }
