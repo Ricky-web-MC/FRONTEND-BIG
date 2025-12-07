@@ -2,7 +2,9 @@
   --card-bg: rgba(10,10,12,0.85);
   --accent: #00eaff;
 }
+
 * { box-sizing: border-box; }
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -29,12 +31,14 @@ body {
   z-index: -3;
   filter: brightness(40%);
 }
+
 .overlay {
   position: fixed;
   inset: 0;
   background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.35));
   z-index: -2;
 }
+
 .card {
   width: 94%;
   max-width: 980px;
@@ -46,6 +50,7 @@ body {
   grid-template-columns: 1fr 320px;
   gap: 16px;
 }
+
 .top-user {
   display: flex;
   align-items: center;
@@ -53,50 +58,46 @@ body {
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(255,255,255,0.04);
 }
-.pp {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  border: 3px solid cyan;
-  box-shadow: 0 0 10px white;
-  object-fit: cover;
-}
+
 .me { 
   color: yellow;
   font-size: 18px;
-  border-radius: 20px;
   font-weight: 600;
-  margin: 10px 0;
   text-shadow: 0 0 8px cyan;
 }
 
 .meta { font-size: 13px; opacity: 0.9; }
 
-/* Update: Tambahin style untuk tombol toggle chat */
-.toggle-chat-btn {
-  width: 100%;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, #00a7ff, #00eaff);
-  color: #001;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 12px;
+.players-area {
+  margin-top: 10px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-.toggle-chat-btn:hover {
-  box-shadow: 0 0 10px cyan, 0 0 20px cyan;
-  transform: scale(1.02);
-  background: linear-gradient(135deg, #00eaff, #00a7ff);
+.player-card {
+  flex: 1 1 100px;
+  padding: 10px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-/* Update: Chat area sekarang bisa hidden */
+.player-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 5px var(--accent);
+}
+
+.player-card.dead {
+  opacity: 0.4;
+  text-decoration: line-through;
+  cursor: default;
+}
+
 .chat-area {
   display: flex;
   flex-direction: column;
@@ -105,23 +106,20 @@ body {
   overflow: hidden;
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   padding: 12px;
-  /* Tambahin transition opacity */
-  opacity: 1;
-  transition: opacity 0.3s ease;
 }
 
-.chat-area.hidden {
-  opacity: 0;
-  pointer-events: none;
-  display: none; /* Atau tetap flex, tapi opacity 0 dan pointer-events none */
+.chat-log {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px;
 }
 
-.chat-log { flex: 1; overflow: auto; padding-right: 6px; }
 .chat-input {
   display: flex;
   gap: 8px;
   margin-top: 10px;
 }
+
 .chat-input input {
   flex: 1;
   padding: 10px;
@@ -130,6 +128,7 @@ body {
   background: transparent;
   color: #fff;
 }
+
 .chat-input button {
   padding: 10px 14px;
   border-radius: 10px;
@@ -139,79 +138,7 @@ body {
   color: #001;
 }
 
-.side {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.players-card {
-  background: rgba(0,0,0,0.35);
-  padding: 12px;
-  border-radius: 10px;
-  height: calc(100% - 120px);
-  overflow: auto;
-}
-.player-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px;
-  border-radius: 8px;
-  margin-bottom: 6px;
-  background: rgba(255,255,255,0.02);
-}
-.player-item.dead { opacity: 0.5; }
-
-.btn {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: none;
-  background: linear-gradient(135deg,#00eaff,#00a7ff);
-  color: #001;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  box-shadow: 0 0 5px cyan, 0 0 10px cyan;
-  transform: scale(1.05);
-  background: cyan;
-  color: #fc0a0a; 
-}
-
-.btn.ghost {
-  background: transparent;
-  border: 2px solid rgba(255,255,255,0.06);
-  color: #fc0a0a;
-  transition: all 0.3s ease;
-}
-
-.btn.ghost:hover {
-  box-shadow: 0 0 10px cyan, 0 0 20px cyan;
-  transform: scale(1.08);
-  background: #001;
-  color: #fc0a0a;
-}
-
-/* HAPUS .overlay-count */
-
 @media(max-width:880px){
   .card{grid-template-columns:1fr}
-  .side{order:2}
-  .chat-area{order:1;height:60vh}
-}
-
-.page-fade-out {
-  animation: fadeOut 0.5s ease forwards;
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-/* Tambahin class hidden */
-.hidden {
-  display: none !important;
+  .chat-area{height:60vh}
 }

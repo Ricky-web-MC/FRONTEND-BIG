@@ -1,57 +1,43 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MAFIA - Lobby (Multiplayer)</title>
-  <link rel="stylesheet" href="./game.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mafia Game</title>
+<link rel="stylesheet" href="game.css">
 </head>
 <body>
-  <video autoplay muted loop class="bgVideo">
-    <source src="../public/video/fantasyc.mp4" type="video/mp4">
-  </video>
-  <div class="overlay"></div>
 
-  <div class="card" id="card">
-    <div>
-      <div class="top-user">
-        <img id="myPP" class="pp" src="../public/img/profile.jpg" alt="pp">
-        <div>
-          <div class="me" id="myName">Guest</div>
-          <div class="meta">
-            <span id="roomId"></span>
-            <span id="playersCount"></span>/<span id="playersMax"></span>
-          </div>
-        </div>
-        <div style="margin-left:auto;display:flex;gap:8px">
-          <button id="btnBackHome" class="btn ghost"><i class="fa-solid fa-door-open"></i> Keluar lobby</button>
-        </div>
-      </div>
+<!-- Background & overlay -->
+<video autoplay muted loop class="bgVideo">
+  <source src="../public/img/bg.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
 
-      <!-- Tombol untuk membuka chat -->
-      <button id="btnToggleChat" class="btn toggle-chat-btn">
-        <i class="fa-solid fa-comment"></i> Buka Obrolan
-      </button>
-
-      <!-- Area Chat (default hidden) -->
-      <div id="chatArea" class="chat-area hidden">
-        <div id="chatLog" class="chat-log"></div>
-        <div class="chat-input">
-          <input id="chatInput" placeholder="Ketik pesan..." autocomplete="off">
-          <button id="btnSend" class="btn">Kirim</button>
-        </div>
-      </div>
+<!-- Main card -->
+<div class="card">
+  <!-- Left: Players -->
+  <div class="players-area-wrapper">
+    <div class="top-user">
+      <div id="myName" class="me">Player</div>
+      <div class="meta">Role: <span id="myRole">?</span></div>
     </div>
+    <div id="gamePhase" class="meta">PHASE</div>
+    <div id="timer" class="meta">00s</div>
+    <div id="playersArea" class="players-area"></div>
+  </div>
 
+  <!-- Right: Chat -->
+  <div class="chat-area">
+    <div id="chatLog" class="chat-log"></div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Type a message...">
+      <button id="btnSend">Send</button>
+    </div>
+  </div>
+</div>
 
-  <!-- HAPUS countOverlay -->
-
-  <audio id="clickSound">
-    <source src="../public/sound/button.mp3" type="audio/mpeg">
-  </audio>
-
-  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-  <script src="./game.js"></script>
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+<script src="game.js"></script>
 </body>
 </html>
