@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const username = localStorage.getItem('username') || 'Guest';
   const room = localStorage.getItem('roomId');
-  let myRole = null;
+  
+  let myRole = localStorage.getItem('myRole') || null; // ambil role dari localStorage
   let alive = true;
 
   // ===== SOCKET CONNECTION =====
@@ -22,16 +23,27 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log('Connected to server', socket.id);
     // Join game room
     socket.emit('joinGame', { username, room });
+
+    // Kalau role sudah ada di localStorage, langsung tampilkan
+    if(myRole){
+      console.log('Role loaded from localStorage:', myRole);
+      appendMessage('System', `You are ${myRole}`);
+    }
   });
+
 
   // ===== RECEIVE ROLE ASSIGNMENT =====
   socket.on('setRole', ({ role }) => {
     myRole = role;
     console.log('My role:', role);
 
-    // Optional: highlight player card if UI sudah ada
+    // Simpan ke localStorage biar bisa dipakai ulang
+    localStorage.setItem('myRole', role);
+
+    // Optional: highlight player card atau info UI
     appendMessage('System', `You are ${role}`);
   });
+
 
   // ===== RECEIVE INITIAL GAME STATE =====
   socket.on('initialGameState', ({ players, gamePhase, timeLeft }) => {

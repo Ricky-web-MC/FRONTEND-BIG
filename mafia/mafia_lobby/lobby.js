@@ -131,6 +131,9 @@ function showRolePopup(){
   const role = Math.random() < 0.4 ? 'Mafia' : 'Village'; // 40% Mafia
   myRoleEl.textContent = role;
 
+  // Simpan role ke localStorage supaya game.js bisa akses
+  localStorage.setItem('myRole', role);
+
   rolePopup.style.display = "flex";
   rolePopup.classList.add('page-fade-in'); // bisa tambahin fade-in CSS nanti
 
