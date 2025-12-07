@@ -327,6 +327,21 @@ select {
   box-shadow: 0 0 15px cyan;
 }
 
+.btn.ghost {
+  background: transparent;
+  font-size: 15px;
+  border: 2px solid rgba(1, 142, 126, 0.509);
+  border-radius: 5px;
+  color: #fc0a0a;
+  transition: all 0.3s ease;
+}
+
+.btn.ghost:hover {
+  box-shadow: 0 0 10px rgb(255, 0, 0), 0 0 20px rgb(192, 10, 10);
+  transform: scale(1.08);
+  background: #001;
+  color: #fc0a0a;
+}
 /* home.css (existing styles kept) */
 /* ==================== UPDATE: small styles for join input in mode-select ==================== */
 

@@ -106,7 +106,7 @@ function startCountdown(start){
       clearInterval(iv);
       countOverlay.querySelector('.small').textContent = "GAME DIMULAI!!!";
       setTimeout(() => {
-        window.location.href = "game.html";
+        window.location.href = "../mafia_game/game.html";
       }, 900);
     }
   }, 1000);
@@ -135,7 +135,7 @@ btnBackHome.addEventListener('click', () => {
   document.body.classList.add('page-fade-out');
   setTimeout(() => {
     localStorage.removeItem('roomId');
-    window.location.href = "home.html";
+    window.location.href = "../mafia_home/home.html";
   }, 500);
 });
 

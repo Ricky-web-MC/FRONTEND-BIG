@@ -1,10 +1,14 @@
+
+<!-- ============================================ MENGATUR HALAMAN UTAMA ===================================================== -->
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MAFIA - Home</title>
-  <link rel="stylesheet" href="../mafiaDecorate/home.css" />
+  <title>Mafia Home</title>
+  <link rel="shortcut icon" href="../public/image/favicon.web.png" type="image/x-icon">
+  <link rel="stylesheet" href="./home.css" />
   <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -17,6 +21,7 @@
       <h2 class="judul">Masukkan Profil Kamu</h2>
       <label for="introPic" class="intro-label">Upload Foto Profile:</label><br>
       <input type="file" id="introPic" accept="image/*">
+      <label for="introPic" class="intro-label">masukan username</label><br>
       <input type="text" id="introName" placeholder="Masukkan Username">
       <button id="introSubmit" class="introSubmit">Lanjut</button>
       <button id="introCancel" class="introCancel">Batal</button>
@@ -41,39 +46,35 @@
       <source src="../public/sound/fantasyFX1.mp3" type="audio/mpeg" />
     </audio>
   </div>
-
+  
   <!-- ==================== UPDATE: New room UI - Public / Enter Room ID ==================== -->
   <div id="mode-select" class="hidden fade-in">
-    <h2>Buat atau Masuk Ruang</h2>
-
-    <div class="mode-buttons">
-      <button id="publicBtn">Main (Public)</button>
-    </div>
+    <h2>Buat Room atau Join Publik</h2>
 
     <div id="join-block" style="margin-top:10px;">
-      <label for="roomIdInput">Masukkan ID Room (jika sudah ada):</label><br>
+      <label for="roomIdInput" style="width: 380px;">Masukkan ID Room</label>
       <input id="roomIdInput" placeholder="Contoh: R8-ABC12" style="padding:8px;border-radius:8px;border:2px solid cyan;background:rgba(0,0,0,0.5);color:#fff">
-      <button id="joinBtn" class="tombolKonfirm">Masuk</button>
     </div>
-
-    <div id="player-select" style="margin-top:12px;">
-      <label for="playerCount">Pilih Jumlah Pemain (5-20):</label>
+    
+    <div id="player-select" style="margin-top:10px;">
+      <label for="playerCount">Pilih Jumlah Pemain</label><br>
       <select id="playerCount">
-        <option value="5">5 Pemain</option>
-        <option value="8" selected>8 Pemain</option>
+        <option value="5" selected>5 Pemain</option>
+        <option value="8">8 Pemain</option>
         <option value="12">12 Pemain</option>
         <option value="15">15 Pemain</option>
         <option value="18">18 Pemain</option>
         <option value="20">20 Pemain</option>
-      </select>
-      <button id="cancelPLayerBtn" class="tombolKonfirm">Batal</button>
-    </div>
+      </select><br>
+      <button id="cancelPLayerBtn" class="btn ghost" style="margin-right: 50px;">Kembali</button>
+      <button id="joinBtn" class="tombolKonfirm">Buat Room</button>
+      <button id="publicBtn" class="tombolKonfirm"> Main ( Public ) </button>
   </div>
 
   <audio id="clickSound">
     <source src="../public/sound/button.mp3" type="audio/mpeg">
   </audio>
 
-  <script src="../mafiaInteract/home.js"></script>
+  <script src="./home.js"></script>
 </body>
 </html>

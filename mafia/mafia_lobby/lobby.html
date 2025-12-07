@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MAFIA - Lobby (Multiplayer)</title>
-  <link rel="stylesheet" href="../mafiaDecorate/lobby.css">
+  <title>Lobby Game</title>
+  <link rel="shortcut icon" href="../public/image/favicon.web.png" type="image/x-icon">
+  <link rel="stylesheet" href="./lobby.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -20,8 +21,8 @@
         <div>
           <div class="me" id="myName">Guest</div>
           <div class="meta">
-            <span id="roomId"></span>
-            <span id="playersCount"></span>/<span id="playersMax"></span>
+            Room Id: <span id="roomId">-</span> • Players: 
+            <span id="playersCount">0</span>/<span id="playersMax">0</span>
           </div>
         </div>
         <div style="margin-left:auto;display:flex;gap:8px">
@@ -29,14 +30,9 @@
         </div>
       </div>
 
-      <!-- Tombol untuk membuka chat -->
-      <button id="btnToggleChat" class="btn toggle-chat-btn">
-        <i class="fa-solid fa-comment"></i> Buka Obrolan
-      </button>
-
-      <!-- Area Chat (default hidden) -->
-      <div id="chatArea" class="chat-area hidden">
+      <div class="chat-area">
         <div id="chatLog" class="chat-log"></div>
+
         <div class="chat-input">
           <input id="chatInput" placeholder="Ketik pesan..." autocomplete="off">
           <button id="btnSend" class="btn">Kirim</button>
@@ -44,14 +40,34 @@
       </div>
     </div>
 
+    <aside class="side">
+      <div class="players-card">
+        <h4>Daftar Pemain</h4>
+        <div id="playersList"></div>
+      </div>
 
-  <!-- HAPUS countOverlay -->
+      <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+        <div>
+          <button id="btnViewPlayers" class="btn">Lihat Player</button>
+        </div>
+        <div>
+          <button id="btnReady" class="btn">Siap</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div id="countOverlay" class="overlay-count" style="display:none">
+    <div class="small">Game akan segera dimulai dalam</div>
+    <div id="countNum" class="countbox">10</div>
+    <div class="small">Siapkan dirimu...</div>
+  </div>
 
   <audio id="clickSound">
     <source src="../public/sound/button.mp3" type="audio/mpeg">
   </audio>
 
   <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-  <script src="../mafiaInteract/game.js"></script>
+  <script src="./lobby.js" defer></script>
 </body>
 </html>

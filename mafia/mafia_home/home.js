@@ -46,7 +46,7 @@ window.addEventListener("load", () => {
 introSubmit.addEventListener("click", () => {
   const name = introName.value.trim();
   if (!name) {
-    alert("Masukin username dulu bre 😅");
+    alert("Tolong masukin username nya 😅");
     return;
   }
 
@@ -203,7 +203,7 @@ function genRoomCode(maxPlayers) {
   return `R${maxPlayers}-${rnd}`;
 }
 
-// when user clicks Public (create room)
+// jika user memilih Public (create room)
 publicBtn.addEventListener('click', () => {
   const username = localStorage.getItem('username') || 'Guest';
   const players = parseInt(playerCount.value || '8', 10);
@@ -217,7 +217,7 @@ publicBtn.addEventListener('click', () => {
   // use small fade for UX
   document.body.classList.add('page-fade-out');
   setTimeout(() => {
-    window.location.href = "lobby.html";
+    window.location.href = "../mafia_lobby/lobby.html";
   }, 450);
 });
 
@@ -233,7 +233,7 @@ joinBtn.addEventListener('click', () => {
   localStorage.setItem('playerCount', playerCount.value || '8');
   document.body.classList.add('page-fade-out');
   setTimeout(() => {
-    window.location.href = "lobby.html";
+    window.location.href = "../mafia_lobby/lobby.html";
   }, 450);
 });
 
