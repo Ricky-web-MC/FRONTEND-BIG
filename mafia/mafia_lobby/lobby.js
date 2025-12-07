@@ -21,6 +21,7 @@ const clickSound = document.getElementById('clickSound');
 const countOverlay = document.getElementById('countOverlay');
 const countNum = document.getElementById('countNum');
 
+
 // ===== GLOBAL STATE =====
 const username = localStorage.getItem('username') || 'Guest';
 const profileImage = localStorage.getItem('profileImage') || '../public/img/profile.jpg';
@@ -32,11 +33,13 @@ if(!room){
   localStorage.setItem('roomId', room);
 }
 
+
 // ===== RENDER INITIAL UI =====
 myNameEl.textContent = username;
 myPP.src = profileImage;
 roomIdEl.textContent = room;
 playersMaxEl.textContent = playersMax;
+
 
 // ===== ENABLE CLICK SOUND =====
 window.addEventListener('click', function unlock(){
@@ -53,11 +56,13 @@ function playClick(){
   } 
 }
 
+
 // ===== SOCKET CONNECT =====
 socket.on('connect', () => {
   console.log('connected', socket.id);
   socket.emit('joinLobby', { username, room, maxPlayers: playersMax });
 });
+
 
 // ===== RECEIVE PLAYER LIST =====
 socket.on('playerList', (list) => {
@@ -78,15 +83,13 @@ socket.on('roomInfo', (info) => {
   }
 });
 
+
 // ===== COUNTDOWN =====
 let countdownRunning = false;
 
 socket.on('startCountdown', (data) => {
   const secs = parseInt(data?.seconds || 10, 10);
-  const serverStart = data?.startTime || Date.now();
-  const diff = Math.floor((Date.now() - serverStart) / 1000);
-  const adjusted = Math.max(0, secs - diff);
-  startCountdown(adjusted);
+  startCountdown(secs);
 });
 
 function startCountdown(start){
@@ -99,18 +102,57 @@ function startCountdown(start){
   let t = start;
 
   const iv = setInterval(() => {
-    t--;
     countNum.textContent = t;
+    t--;
 
-    if (t <= 0){
+    if (t < 0){
       clearInterval(iv);
-      countOverlay.querySelector('.small').textContent = "GAME DIMULAI!!!";
+
+      // Ubah overlay text
+      countOverlay.querySelector('.small').textContent = "ROLE AKAN DIBAGIKAN!!!";
+
+      // Delay sejenak biar user lihat
       setTimeout(() => {
-        window.location.href = "../mafia_game/game.html";
-      }, 900);
+        countOverlay.style.display = "none";
+        showRolePopup();
+      }, 500);
     }
   }, 1000);
 }
+
+
+
+// ===== ROLE POPUP =====
+function showRolePopup(){
+  const rolePopup = document.getElementById('rolePopup');
+  const myRoleEl = document.getElementById('myRole');
+
+  // Pilih role random: Mafia / Village
+  const role = Math.random() < 0.4 ? 'Mafia' : 'Village'; // 40% Mafia
+  myRoleEl.textContent = role;
+
+  rolePopup.style.display = "flex";
+  rolePopup.classList.add('page-fade-in'); // bisa tambahin fade-in CSS nanti
+
+  // Tampilkan 3 detik
+  setTimeout(() => {
+    rolePopup.classList.remove('page-fade-in');
+    rolePopup.classList.add('page-fade-out');
+
+    setTimeout(() => {
+      rolePopup.style.display = "none";
+
+      // Emit siap ke server
+      socket.emit('playerReady', { room, username, role });
+
+      // Redirect ke game.html
+      window.location.href = "../mafia_game/game.html";
+    }, 500); // sesuaikan durasi fadeOut CSS
+  }, 4000); // 3 detik popup
+}
+
+
+
 
 // ===== CHAT =====
 socket.on('chatMessage', ({username: from, msg}) => {
@@ -128,6 +170,8 @@ btnSend.addEventListener('click', () => {
 chatInput.addEventListener('keydown', (e) => {
   if(e.key === 'Enter') btnSend.click();
 });
+
+
 
 // ===== BUTTONS =====
 btnBackHome.addEventListener('click', () => {
@@ -149,6 +193,8 @@ btnReady.addEventListener('click', () => {
   socket.emit('chatMessage', { room, username, msg: "Siap!" });
   alert("Siap! Tunggu pemain lain…");
 });
+
+
 
 // ===== HELPERS =====
 function appendChat(from, text){

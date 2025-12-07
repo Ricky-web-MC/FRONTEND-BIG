@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="./lobby.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
   <video autoplay muted loop class="bgVideo">
     <source src="../public/video/fantasyc.mp4" type="video/mp4">
@@ -21,7 +23,7 @@
         <div>
           <div class="me" id="myName">Guest</div>
           <div class="meta">
-            Room Id: <span id="roomId">-</span> • Players: 
+            Room Id: <span id="roomId">-</span> • Players:
             <span id="playersCount">0</span>/<span id="playersMax">0</span>
           </div>
         </div>
@@ -57,11 +59,23 @@
     </aside>
   </div>
 
+
+  <!-- ========================== COUNTDOWN ========================== -->
   <div id="countOverlay" class="overlay-count" style="display:none">
     <div class="small">Game akan segera dimulai dalam</div>
     <div id="countNum" class="countbox">10</div>
     <div class="small">Siapkan dirimu...</div>
   </div>
+
+
+  <!-- =============== Popup Pembagian Role ==================-->
+  <div id="rolePopup" class="role-popup" style="display:none;">
+    <div class="role-box">
+      <div id="roleTitle">Peran Kamu</div>
+      <div id="myRole" class="role-name">Villager</div>
+    </div>
+  </div>
+
 
   <audio id="clickSound">
     <source src="../public/sound/button.mp3" type="audio/mpeg">
@@ -70,4 +84,5 @@
   <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
   <script src="./lobby.js" defer></script>
 </body>
+
 </html>

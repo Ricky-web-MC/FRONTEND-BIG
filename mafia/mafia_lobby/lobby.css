@@ -188,3 +188,72 @@ body {
   from { opacity: 1; }
   to { opacity: 0; }
 }
+
+/* ================= ROLE POPUP ================= */
+.role-popup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.0s ease;
+}
+
+.role-popup.page-fade-in {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.role-popup.page-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.role-popup .role-box {
+  background: var(--card-bg);
+  padding: 24px 32px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+  min-width: 280px;
+  max-width: 400px;
+}
+
+.role-popup #roleTitle {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+.role-popup #myRole {
+  font-size: 36px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  color: #ff6b6b; /* default Village color, bisa diganti */
+  text-shadow: 0 0 12px #ff6b6b, 0 0 24px #ff6b6b;
+}
+
+.role-popup .btn {
+  padding: 10px 20px;
+  font-weight: 700;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#00eaff,#0077ff);
+  color: #001;
+  cursor: default;
+}
+
+/* Optional: color Mafia */
+.role-popup #myRole.mafia {
+  color: #ff3c3c;
+  text-shadow: 0 0 12px #ff3c3c, 0 0 24px #ff3c3c;
+}
+
