@@ -36,7 +36,7 @@ if (login) {
 
       setTimeout(() => {
         popupSuccess.classList.remove("show");
-        window.location.href = "./mafia/mafiaUI/home.html";
+        window.location.href = "./mafia/mafia_home/home.html";
       }, 2500);
 
       return;
